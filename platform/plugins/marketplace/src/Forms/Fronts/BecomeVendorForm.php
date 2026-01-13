@@ -76,6 +76,27 @@ class BecomeVendorForm extends FormAbstract
                     ->placeholder(__('Ex: 0943243332'))
                     ->required(),
             )
+            ->add(
+                'agreement_type',
+                'customSelect',
+                TextFieldOption::make()
+                    ->label(__('Agreement Type'))
+                    ->choices([
+                        'commission' => __('Commission (%) - Pay a percentage on each sale'),
+                        'flat_fee' => __('Flat Fee - Pay a fixed monthly or yearly fee'),
+                    ])
+                    ->selected('commission')
+                    ->required()
+                    ->helperText(__('Select your preferred payment model'))
+            )
+            ->add(
+                'agreement_notes',
+                'textarea',
+                TextFieldOption::make()
+                    ->label(__('Additional Notes'))
+                    ->placeholder(__('Any questions or special requirements?'))
+                    ->rows(3)
+            )
             ->when(MarketplaceHelper::getSetting('requires_vendor_documentations_verification', true), function (): void {
                 $this
                     ->add(
