@@ -18,4 +18,11 @@ Theme::registerRoutes(function (): void {
             Route::get('remove/{id}', 'destroy')->name('cart.remove');
             Route::get('destroy', 'empty')->name('cart.destroy');
         });
+
+    Route::middleware(CheckCartEnabledMiddleware::class)
+        ->controller(\Botble\Ecommerce\Http\Controllers\Fronts\BuyNowController::class)
+        ->name('public.')
+        ->group(function (): void {
+            Route::post('buy-now/{id}', 'buyNow')->name('buy-now');
+        });
 });
