@@ -278,3 +278,45 @@ Theme::registerRoutes(function (): void {
         });
     });
 });
+
+AdminHelper::registerRoutes(function (): void {
+    Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'prefix' => 'ecommerce'], function (): void {
+        Route::group(['prefix' => 'reseller-commissions', 'as' => 'reseller-commissions.'], function (): void {
+            Route::get('/', [
+                'as' => 'index',
+                'uses' => 'ResellerCommissionController@index',
+                'permission' => 'customers.index',
+            ]);
+
+            Route::post('{id}/approve', [
+                'as' => 'approve',
+                'uses' => 'ResellerCommissionController@approve',
+                'permission' => 'customers.edit',
+            ])->wherePrimaryKey();
+
+            Route::post('{id}/pay', [
+                'as' => 'pay',
+                'uses' => 'ResellerCommissionController@pay',
+                'permission' => 'customers.edit',
+            ])->wherePrimaryKey();
+
+            Route::post('bulk-approve', [
+                'as' => 'bulk-approve',
+                'uses' => 'ResellerCommissionController@bulkApprove',
+                'permission' => 'customers.edit',
+            ]);
+
+            Route::post('bulk-pay', [
+                'as' => 'bulk-pay',
+                'uses' => 'ResellerCommissionController@bulkPay',
+                'permission' => 'customers.edit',
+            ]);
+
+            Route::get('reseller/{id}', [
+                'as' => 'reseller-details',
+                'uses' => 'ResellerCommissionController@resellerDetails',
+                'permission' => 'customers.index',
+            ])->wherePrimaryKey();
+        });
+    });
+});
