@@ -14,6 +14,7 @@ use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\QueryBuilders\StoreQueryBuilder;
 use Botble\Ecommerce\Traits\LocationTrait;
 use Botble\Marketplace\Enums\StoreStatusEnum;
+use Botble\Marketplace\Models\VendorWarning;
 use Botble\Media\Facades\RvMedia;
 use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -48,6 +49,9 @@ class Store extends BaseModel
         'zip_code',
         'certificate_file',
         'government_id_file',
+        'agreement_type',
+        'agreement_value',
+        'agreement_notes',
         'tax_id',
         'is_verified',
         'verified_at',
@@ -65,6 +69,7 @@ class Store extends BaseModel
         'is_verified' => 'boolean',
         'verified_at' => 'datetime',
         'verification_note' => SafeContent::class,
+        'agreement_value' => 'decimal:2',
     ];
 
     protected static function booted(): void
@@ -218,6 +223,16 @@ class Store extends BaseModel
         }
 
         return $data;
+    }
+
+    public function warnings(): HasMany
+    {
+        return $this->hasMany(VendorWarning::class, 'store_id');
+    }
+
+    public function unacknowledgedWarnings(): HasMany
+    {
+        return $this->hasMany(VendorWarning::class, 'store_id')->where('acknowledged', false);
     }
 
     public function newEloquentBuilder($query): StoreQueryBuilder
