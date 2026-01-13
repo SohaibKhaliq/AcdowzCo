@@ -53,6 +53,13 @@ class Customer extends BaseModel implements
         'phone',
         'status',
         'private_notes',
+        'reseller_id',
+        'is_reseller_active',
+        'reseller_balance',
+        'reseller_commission_rate',
+        'phone_verified_at',
+        'oauth_provider',
+        'oauth_uid',
     ];
 
     protected $hidden = [
@@ -64,6 +71,10 @@ class Customer extends BaseModel implements
         'status' => CustomerStatusEnum::class,
         'dob' => 'date',
         'confirmed_at' => 'datetime',
+        'phone_verified_at' => 'datetime',
+        'is_reseller_active' => 'boolean',
+        'reseller_balance' => 'decimal:2',
+        'reseller_commission_rate' => 'decimal:2',
     ];
 
     public function sendPasswordResetNotification($token): void
@@ -110,8 +121,41 @@ class Customer extends BaseModel implements
         return $this->hasMany(Wishlist::class, 'customer_id');
     }
 
+    public function resellerClicks(): HasMany
+    {
+        return $this->hasMany(ResellerClick::class, 'reseller_id');
+    }
+
+    public function resellerOrders(): HasMany
+    {
+        return $this->hasMany(ResellerOrder::class, 'reseller_id');
+    }
+
+    public function approvedResellerOrders(): HasMany
+    {
+        return $this->resellerOrders()->where('status', 'approved');
+    }
+
+    public function generateResellerLink(int $productId = null): string
+    {
+        $baseUrl = url('/');
+        $resellerId = $this->reseller_id;
+        
+        if ($productId) {
+            return $baseUrl . '/product/' . $productId . '?ref=' . $resellerId;
+        }
+        
+        return $baseUrl . '?ref=' . $resellerId;
+    }
+
     protected static function booted(): void
     {
+        self::creating(function (Customer $customer): void {
+            if (empty($customer->reseller_id)) {
+                $customer->reseller_id = 'RSL' . strtoupper(Str::random(10));
+            }
+        });
+
         self::deleted(function (Customer $customer): void {
             $customer->discounts()->detach();
             $customer->usedCoupons()->detach();
