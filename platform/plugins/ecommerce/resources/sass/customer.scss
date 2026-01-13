@@ -1,0 +1,1533 @@
+@import 'cropper';
+
+$primaryColor: var(--primary-color);
+
+.bb-customer-page {
+    background-color: #ffffff;
+    min-height: 100vh;
+    margin: 50px 0 0;
+
+    a {
+        text-decoration: none;
+        transition: color 0.15s ease-in-out;
+    }
+
+    .border-border {
+        border: 1px solid #e5e7eb;
+    }
+
+    .userpic-avatar {
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        width: 70%;
+        margin: 0 auto;
+        transition: transform 0.15s ease-in-out;
+
+        &:hover {
+            transform: scale(1.02);
+        }
+    }
+
+    .bb-profile-sidebar {
+        padding: 1.5rem 0;
+        height: 100%;
+
+        .bb-profile-user-menu {
+            list-style: none;
+            display: block;
+
+            li.list-group-item {
+                display: block;
+                border: none;
+                margin-bottom: 2px;
+                transition: background-color 0.15s ease-in-out;
+
+                &:hover {
+                    background-color: #f9fafb;
+                    border-radius: 6px;
+                    margin: 0 8px 2px;
+                    padding: 0 8px;
+                }
+
+                i {
+                    float: right;
+                    color: #6b7280;
+                    line-height: 24px;
+                    font-size: 1rem;
+                    transition: color 0.15s ease-in-out;
+                }
+
+                a {
+                    color: #374151;
+                    display: block;
+                    padding: 8px 0;
+                    font-weight: 500;
+
+                    &:hover {
+                        color: $primaryColor;
+                    }
+
+                    &.active,
+                    &:active {
+                        text-decoration: none;
+                        color: $primaryColor;
+                        font-weight: 600;
+                        background-color: rgba(var(12, 85, 170, 13, 110, 253), 0.05);
+                        border-radius: 6px;
+                        padding-left: 8px;
+                    }
+                }
+            }
+        }
+
+        .profile-customer-name {
+            font-size: 1rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            color: $primaryColor;
+            font-weight: 600;
+        }
+    }
+
+    .bb-profile-content {
+        padding: 2rem 1.5rem;
+
+        .bb-profile-header {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+
+            .bb-profile-header-title {
+                font-size: 1.875rem;
+                font-weight: 700;
+                color: #111827;
+                margin: 0;
+                line-height: 1.2;
+            }
+        }
+    }
+
+    h2.customer-page-title {
+        text-align: start;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 1.5rem;
+        line-height: 1.3;
+    }
+
+    .customer-order-detail {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 1.5rem;
+        border: 1px solid #e5e7eb;
+
+        p {
+            margin: 0;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        span {
+            min-width: 120px;
+            display: inline-block;
+            margin: 6px 0;
+
+            &.order-detail-value {
+                padding: 6px 12px;
+                line-height: 1.4;
+                border-bottom: 1px solid #e5e7eb;
+                margin-left: 16px;
+                color: #111827;
+                font-weight: 600;
+                display: inline-block;
+                background-color: #f9fafb;
+                border-radius: 4px;
+            }
+
+            h5 {
+                text-align: center;
+                margin: 2rem 0;
+                width: 100%;
+                font-weight: 600;
+                color: #111827;
+                font-size: 1.25rem;
+            }
+        }
+    }
+
+    .dashboard-address {
+        margin-bottom: 1.5rem;
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            transition: border-color 0.15s ease-in-out;
+
+            &:hover {
+                border-color: #d1d5db;
+            }
+
+            p {
+                font-size: 0.875rem;
+                line-height: 1.5;
+                color: #6b7280;
+            }
+        }
+    }
+
+    .badge {
+        color: #fff;
+        min-width: 0 !important;
+        font-weight: 500;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+
+        &.bg-success {
+            background-color: #10b981 !important;
+        }
+
+        &.bg-warning {
+            background-color: #f59e0b !important;
+            color: #111827 !important;
+        }
+
+        &.bg-danger {
+            background-color: #ef4444 !important;
+        }
+
+        &.bg-info {
+            background-color: #3b82f6 !important;
+        }
+    }
+
+    .show-admin-bar {
+        .modal {
+            top: 80px;
+        }
+    }
+
+    .pagination {
+        margin-top: 2rem;
+        justify-content: center;
+
+        .page-item {
+            margin: 0 1px;
+
+            .page-link {
+                color: #6b7280;
+                border: 1px solid #e5e7eb;
+                border-radius: 6px;
+                padding: 0.5rem 0.75rem;
+                font-weight: 500;
+                transition: all 0.15s ease-in-out;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    background-color: #f9fafb;
+                    border-color: #d1d5db;
+                    color: #374151;
+                }
+            }
+
+            &.active {
+                .page-link {
+                    background-color: $primaryColor;
+                    border-color: $primaryColor;
+                    color: #fff;
+                }
+            }
+
+            &.disabled {
+                .page-link {
+                    color: #9ca3af;
+                    background-color: #ffffff;
+                    border-color: #e5e7eb;
+                }
+            }
+        }
+    }
+
+    .btn-primary {
+        background-color: $primaryColor;
+        border-color: $primaryColor;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: all 0.15s ease-in-out;
+
+        &:hover {
+            background-color: rgba(var(12, 85, 170, 13, 110, 253), 0.9);
+            border-color: rgba(var(12, 85, 170, 13, 110, 253), 0.9);
+        }
+
+        &:active {
+            background-color: rgba(var(12, 85, 170, 13, 110, 253), 0.8);
+            border-color: rgba(var(12, 85, 170, 13, 110, 253), 0.8);
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 0.2rem rgba(var(12, 85, 170, 13, 110, 253), 0.25);
+        }
+    }
+
+    svg.icon {
+        stroke-width: 1;
+        margin-bottom: 0;
+    }
+
+    table.table.table-bordered.table-striped {
+        tr,
+        td,
+        th {
+            vertical-align: middle;
+        }
+    }
+
+    img.img-fluid.rounded-start.ecommerce-product-image {
+        max-height: 100px;
+    }
+
+    .gap-2 {
+        gap: 0.5rem !important;
+    }
+}
+
+.delete-account-section {
+    margin-top: 3rem;
+    border: 1px solid var(--bs-border-color);
+    padding: 1rem;
+}
+
+.nav-tabs {
+    padding-bottom: 15px;
+
+    .nav-item {
+        flex: none;
+
+        .nav-link {
+            background-color: #f8f8f8;
+            border-radius: 0;
+            margin: unset;
+            padding: 5px 10px;
+            color: var(--primary-color);
+            width: auto;
+
+            &.active {
+                background-color: var(--primary-color);
+                color: #fff;
+            }
+        }
+    }
+}
+
+// Modern Sidebar Design
+.bb-customer-sidebar-wrapper {
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    min-height: 100vh;
+
+    .bb-customer-sidebar {
+        .bb-customer-sidebar-heading {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #e2e8f0;
+
+            .wrapper-image {
+                width: 48px;
+                height: 48px;
+                background-color: $primaryColor;
+                border-radius: 50%;
+                position: relative;
+                overflow: hidden;
+                flex-shrink: 0;
+
+                img {
+                    position: absolute;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .name {
+                font-weight: 600;
+                font-size: 0.875rem;
+                color: #1e293b;
+                line-height: 1.25;
+            }
+
+            .email {
+                color: #64748b;
+                font-size: 0.75rem;
+                line-height: 1.25;
+            }
+        }
+
+        .bb-customer-navigation {
+            .nav-section-title {
+                font-size: 0.6875rem;
+                letter-spacing: 0.05em;
+                color: #64748b;
+                margin-bottom: 0.5rem;
+            }
+
+            .nav-pills {
+                .nav-item {
+                    .nav-link {
+                        color: #64748b;
+                        font-weight: 500;
+                        font-size: 0.875rem;
+                        border: none;
+                        transition: all 0.15s ease-in-out;
+                        position: relative;
+
+                        &:hover:not(.active) {
+                            background-color: #f8fafc;
+                            color: #475569;
+                        }
+
+                        &.active {
+                            background-color: $primaryColor;
+                            color: #ffffff;
+                            font-weight: 600;
+
+                            .nav-icon {
+                                color: #ffffff;
+                            }
+                        }
+
+                        .nav-icon {
+                            width: 1.125rem;
+                            height: 1.125rem;
+                            color: #94a3b8;
+                            transition: color 0.15s ease-in-out;
+                        }
+
+                        .nav-text {
+                            font-size: 0.875rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .bb-customer-sidebar-footer {
+        background-color: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+
+        .dropdown-menu {
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            .dropdown-item {
+                font-size: 0.875rem;
+                padding: 0.5rem 1rem;
+                display: flex;
+                align-items: center;
+
+                &:hover {
+                    background-color: #f1f5f9;
+                }
+
+                &.text-danger:hover {
+                    background-color: #fef2f2;
+                    color: #dc2626;
+                }
+            }
+        }
+    }
+}
+
+// Mobile Sidebar Improvements
+@media (max-width: 991.98px) {
+    .bb-customer-sidebar-wrapper {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        min-height: auto;
+
+        .bb-customer-sidebar-heading {
+            .d-flex {
+                padding: 1rem !important;
+            }
+        }
+
+        .bb-customer-navigation {
+            padding: 0.75rem !important;
+        }
+
+        .bb-customer-sidebar-footer {
+            padding: 0.75rem !important;
+        }
+    }
+}
+
+svg.icon {
+    stroke-width: 1;
+    margin-bottom: 0;
+}
+
+@keyframes light-white {
+    to {
+        inset-inline-start: 100%;
+    }
+}
+
+@keyframes icon-arrow {
+    49% {
+        transform: translateX(30%);
+    }
+    50% {
+        opacity: 0;
+        transform: translateX(-30%);
+    }
+    51% {
+        opacity: 1;
+    }
+}
+
+// Customer Cards Layout
+.bb-customer-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    &.account-settings-cards {
+        .bb-customer-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            transition: border-color 0.15s ease-in-out;
+            overflow: hidden;
+
+            &:hover {
+                border-color: #d1d5db;
+            }
+
+            .bb-customer-card-header {
+                padding: 1.25rem 1.5rem;
+                border-bottom: 1px solid #e5e7eb;
+                background: #f9fafb;
+
+                .bb-customer-card-title {
+                    margin: 0;
+                    font-size: 1.125rem;
+                    font-weight: 600;
+                    color: #111827;
+
+                    .value {
+                        color: #111827;
+                    }
+
+                    .text-danger {
+                        color: #ef4444 !important;
+                    }
+                }
+            }
+
+            .bb-customer-card-body {
+                padding: 1.5rem;
+
+                .form-group {
+                    margin-bottom: 1rem;
+
+                    label {
+                        font-weight: 500;
+                        color: #374151;
+                        margin-bottom: 0.5rem;
+                        font-size: 0.875rem;
+                    }
+
+                    .form-control {
+                        border-radius: 6px;
+                        border: 1px solid #d1d5db;
+                        padding: 0.5rem 0.75rem;
+                        transition: border-color 0.15s ease-in-out;
+                        font-size: 0.875rem;
+
+                        &:focus {
+                            border-color: $primaryColor;
+                            box-shadow: 0 0 0 0.2rem rgba(var(12, 85, 170, 13, 110, 253), 0.25);
+                        }
+                    }
+                }
+
+                .btn {
+                    margin-top: 0.5rem;
+                    border-radius: 6px;
+                    font-weight: 600;
+                    padding: 0.5rem 1rem;
+                    font-size: 0.875rem;
+                }
+
+                p.text-muted {
+                    margin-bottom: 1rem;
+                    line-height: 1.5;
+                    color: #6b7280;
+                    font-size: 0.875rem;
+                }
+            }
+
+            &.delete-account-card {
+                border-color: #fecaca;
+
+                .bb-customer-card-header {
+                    background: #fef2f2;
+                }
+            }
+        }
+    }
+
+    // Order cards styling (clean)
+    &.order-cards {
+        .bb-customer-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: border-color 0.15s ease-in-out;
+            overflow: hidden;
+
+            &:hover {
+                border-color: #d1d5db;
+            }
+
+            .bb-customer-card-header {
+                padding: 1rem 1.25rem;
+                border-bottom: 1px solid #e5e7eb;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: #f9fafb;
+
+                .bb-customer-card-title {
+                    margin: 0;
+                    font-weight: 600;
+                    font-size: 1rem;
+
+                    .label {
+                        color: #6b7280;
+                        font-weight: 500;
+                    }
+
+                    .value {
+                        color: #111827;
+                        font-weight: 600;
+                    }
+                }
+
+                .bb-customer-card-status {
+                    .badge {
+                        font-size: 0.75rem;
+                        padding: 0.25rem 0.5rem;
+                        border-radius: 6px;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            .bb-customer-card-body {
+                padding: 1.25rem;
+
+                .bb-customer-card-info {
+                    .info-item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 0.5rem;
+                        padding: 0.25rem 0;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        .label {
+                            color: #6b7280;
+                            font-weight: 500;
+                            font-size: 0.875rem;
+                        }
+
+                        .value {
+                            color: #111827;
+                            text-align: right;
+                            font-weight: 600;
+                            font-size: 0.875rem;
+                        }
+                    }
+                }
+            }
+
+            .bb-customer-card-footer {
+                padding: 1rem 1.25rem;
+                border-top: 1px solid #e5e7eb;
+                background: #f9fafb;
+                text-align: right;
+
+                .btn {
+                    border-radius: 6px;
+                    font-weight: 600;
+                    padding: 0.5rem 1rem;
+                    font-size: 0.875rem;
+                }
+            }
+        }
+    }
+}
+
+// Clean Empty State
+.bb-empty {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+
+    .bb-empty-img {
+        margin-bottom: 1.5rem;
+        opacity: 0.6;
+
+        svg {
+            width: 64px;
+            height: 64px;
+            color: #9ca3af;
+        }
+    }
+
+    .bb-empty-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 0.5rem;
+    }
+
+    .bb-empty-subtitle {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+    }
+
+    .bb-empty-action {
+        .btn {
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+    }
+}
+
+// Product Review Cards Clean
+.bb-customer-card-list.product-reviews-cards {
+    .bb-customer-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        transition: border-color 0.15s ease-in-out;
+        overflow: hidden;
+
+        &:hover {
+            border-color: #d1d5db;
+        }
+
+        &.waiting-review-card {
+            .bb-customer-card-header {
+                background: #fef3c7;
+            }
+        }
+
+        &.reviewed-products-card {
+            .bb-customer-card-header {
+                background: #d1fae5;
+            }
+        }
+
+        .bb-customer-card-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+
+            .bb-customer-card-image {
+                flex-shrink: 0;
+                width: 64px;
+                height: 64px;
+                border-radius: 6px;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .bb-customer-card-details {
+                flex: 1;
+
+                .bb-customer-card-name {
+                    font-weight: 600;
+                    font-size: 0.875rem;
+                    margin-bottom: 0.25rem;
+
+                    a {
+                        color: #111827;
+                        text-decoration: none;
+
+                        &:hover {
+                            color: $primaryColor;
+                        }
+                    }
+                }
+
+                .bb-customer-card-meta {
+                    color: #6b7280;
+                    font-size: 0.75rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .bb-customer-card-actions {
+                    .ecommerce-product-star {
+                        display: flex;
+                        gap: 1px;
+
+                        label {
+                            cursor: pointer;
+
+                            .ecommerce-icon {
+                                color: #fbbf24;
+                                font-size: 1rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Overview Page Clean
+.bb-customer-profile-wrapper {
+    .bb-customer-profile {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 1.5rem;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 1.5rem;
+
+        .bb-customer-profile-avatar {
+            position: relative;
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 1rem;
+
+            .bb-customer-profile-avatar-img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #ffffff;
+            }
+
+            .bb-customer-profile-avatar-overlay {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                background-color: $primaryColor;
+                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid #ffffff;
+
+                input[type="file"] {
+                    display: none;
+                }
+
+                label {
+                    cursor: pointer;
+                    color: #ffffff;
+                    margin: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    font-size: 0.75rem;
+                    bottom: 0;
+                    inset-inline-end: 0;
+                }
+            }
+        }
+
+        .bb-customer-profile-info {
+            text-align: center;
+
+            h4 {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: #111827;
+                margin-bottom: 0.75rem;
+            }
+
+            p {
+                color: #6b7280;
+                line-height: 1.5;
+                margin-bottom: 0;
+                font-size: 0.875rem;
+
+                a {
+                    color: $primaryColor;
+                    text-decoration: none;
+                    font-weight: 500;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .col-md-3 {
+        flex: 0 0 auto;
+        width: 25%;
+    }
+
+    .col-md-9 {
+        flex: 0 0 auto;
+        width: 75%;
+    }
+}
+
+// Mobile Responsive
+@media (max-width: 767.98px) {
+    .bb-customer-page {
+        .bb-profile-content {
+            padding: 1.5rem 1rem;
+        }
+
+        .bb-customer-sidebar-wrapper {
+            margin-bottom: 1.5rem;
+        }
+
+        .bb-customer-card-list {
+            gap: 1rem;
+
+            &.account-settings-cards {
+                .bb-customer-card {
+                    .bb-customer-card-header {
+                        padding: 1rem 1.25rem;
+                    }
+
+                    .bb-customer-card-body {
+                        padding: 1.25rem;
+                    }
+                }
+            }
+
+            &.order-cards {
+                .bb-customer-card {
+                    .bb-customer-card-header {
+                        padding: 1rem;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 0.5rem;
+                    }
+
+                    .bb-customer-card-body {
+                        padding: 1rem;
+                    }
+                }
+            }
+        }
+
+        .bb-customer-profile-wrapper {
+            .bb-customer-profile {
+                padding: 1.25rem;
+            }
+        }
+    }
+}
+
+.show-admin-bar .offcanvas.offcanvas-start {
+    top: 40px;
+}
+
+// Order Return Cards Clean
+.bb-customer-card-list.order-return-cards {
+    .bb-customer-card.order-return-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        transition: all 0.15s ease-in-out;
+        overflow: hidden;
+
+        &:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .bb-customer-card-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.25rem;
+
+            .bb-customer-card-title {
+                color: #111827;
+                font-weight: 600;
+                margin-bottom: 0.25rem;
+            }
+
+            .bb-customer-card-status {
+                .badge {
+                    font-size: 0.75rem;
+                    padding: 0.375rem 0.75rem;
+                }
+            }
+        }
+
+        .bb-customer-card-body {
+            padding: 1.25rem;
+
+            .bb-customer-card-info {
+                .info-item {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.375rem;
+
+                    .label {
+                        display: flex;
+                        align-items: center;
+                        color: #6b7280;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+
+                        .icon {
+                            width: 16px;
+                            height: 16px;
+                        }
+                    }
+
+                    .value {
+                        color: #111827;
+                        font-weight: 500;
+                        font-size: 0.875rem;
+
+                        a {
+                            color: $primaryColor;
+                            transition: all 0.15s ease-in-out;
+
+                            &:hover {
+                                opacity: 0.8;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .bb-customer-card-footer {
+            background: #f8f9fa;
+            border-top: 1px solid #e5e7eb;
+            padding: 1rem 1.25rem;
+
+            .btn {
+                font-size: 0.875rem;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                font-weight: 500;
+                transition: all 0.15s ease-in-out;
+
+                .icon {
+                    width: 16px;
+                    height: 16px;
+                }
+
+                &.btn-primary {
+                    background-color: $primaryColor;
+                    border-color: $primaryColor;
+
+                    &:hover {
+                        filter: brightness(0.9);
+                        transform: translateY(-1px);
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Mobile Responsive for Order Return Cards
+@media (max-width: 767.98px) {
+    .bb-customer-card-list.order-return-cards {
+        .bb-customer-card.order-return-card {
+            .bb-customer-card-header {
+                padding: 1rem;
+
+                .d-flex {
+                    flex-direction: column;
+                    align-items: flex-start !important;
+                    gap: 0.75rem;
+                }
+            }
+
+            .bb-customer-card-body {
+                padding: 1rem;
+
+                .bb-customer-card-info {
+                    .row {
+                        .col-md-6 {
+                            margin-bottom: 1rem;
+
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .bb-customer-card-footer {
+                padding: 1rem;
+
+                .btn {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}
+
+// Order Return Detail & Form Cards
+.bb-customer-card.order-return-detail-card,
+.bb-customer-card.order-info-card,
+.bb-customer-card.return-form-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.15s ease-in-out;
+    overflow: hidden;
+
+    .bb-customer-card-header {
+        background: #f8f9fa;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 1.25rem;
+
+        .bb-customer-card-title {
+            color: #111827;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .bb-customer-card-status {
+            .badge {
+                font-size: 0.75rem;
+                padding: 0.375rem 0.75rem;
+            }
+        }
+    }
+
+    .bb-customer-card-body {
+        padding: 1.25rem;
+
+        .bb-customer-card-info {
+            .info-item {
+                display: flex;
+                flex-direction: column;
+                gap: 0.375rem;
+
+                .label {
+                    display: flex;
+                    align-items: center;
+                    color: #6b7280;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+
+                    .icon {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+
+                .value {
+                    color: #111827;
+                    font-weight: 500;
+                    font-size: 0.875rem;
+
+                    a {
+                        color: $primaryColor;
+                        transition: all 0.15s ease-in-out;
+                        text-decoration: none;
+
+                        &:hover {
+                            opacity: 0.8;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Return Items List
+.bb-customer-card.order-return-items-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+
+    .bb-customer-card-header {
+        background: #f8f9fa;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 1.25rem;
+
+        .bb-customer-card-title {
+            color: #111827;
+            font-weight: 600;
+        }
+    }
+
+    .bb-customer-card-body {
+        padding: 0;
+
+        .return-items-list {
+            .return-item-card {
+                border: none;
+                border-bottom: 1px solid #e5e7eb;
+                border-radius: 0;
+                margin-bottom: 0;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                .bb-customer-card-body {
+                    padding: 1.25rem;
+                }
+
+                .return-item-image {
+                    width: 80px;
+                    height: 80px;
+                    overflow: hidden;
+                    border-radius: 6px;
+                    border: 1px solid #e5e7eb;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                .return-item-name {
+                    font-weight: 600;
+                    color: #111827;
+                    font-size: 0.875rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .return-item-sku,
+                .return-item-attributes {
+                    font-size: 0.75rem;
+                    color: #6b7280;
+                }
+
+                .return-item-info {
+                    .info-item {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 0.25rem;
+                        padding: 0.75rem;
+                        background: #f8f9fa;
+                        border-radius: 6px;
+
+                        .label {
+                            font-size: 0.75rem;
+                            color: #6b7280;
+                            font-weight: 500;
+                            display: flex;
+                            align-items: center;
+
+                            .icon {
+                                width: 14px;
+                                height: 14px;
+                            }
+                        }
+
+                        .value {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+
+                            &.text-primary {
+                                color: $primaryColor !important;
+                            }
+
+                            &.text-success {
+                                color: #10b981 !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Return Form Specific Styles
+.bb-customer-card.return-form-card {
+    .return-reason-section {
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .section-title {
+        color: #111827;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .return-products-list {
+        .return-product-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            transition: all 0.15s ease-in-out;
+
+            &:hover {
+                border-color: #d1d5db;
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            }
+
+            .bb-customer-card-body {
+                padding: 1rem;
+            }
+
+            .form-check {
+                margin-top: 0.5rem;
+
+                .form-check-input {
+                    width: 1.25rem;
+                    height: 1.25rem;
+                }
+            }
+
+            .return-product-image {
+                width: 80px;
+                height: 80px;
+                overflow: hidden;
+                border-radius: 6px;
+                border: 1px solid #e5e7eb;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .return-product-name {
+                font-weight: 600;
+                color: #111827;
+                font-size: 0.875rem;
+                cursor: pointer;
+                transition: color 0.15s ease-in-out;
+
+                &:hover {
+                    color: $primaryColor;
+                }
+            }
+
+            .return-product-sku,
+            .return-product-attributes {
+                font-size: 0.75rem;
+                color: #6b7280;
+            }
+
+            .return-product-price {
+                margin-top: 0.5rem;
+            }
+
+            .return-product-controls {
+                .form-label {
+                    margin-bottom: 0.25rem;
+                    font-size: 0.75rem;
+                    color: #6b7280;
+                    display: flex;
+                    align-items: center;
+
+                    .icon {
+                        width: 14px;
+                        height: 14px;
+                    }
+                }
+
+                .form-select,
+                .form-control {
+                    font-size: 0.875rem;
+                }
+
+                .return-amount {
+                    font-weight: 600;
+                    color: #10b981;
+                }
+
+                .info-item {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.25rem;
+                    padding: 0.75rem;
+                    background: #f8f9fa;
+                    border-radius: 6px;
+
+                    .label {
+                        font-size: 0.75rem;
+                        color: #6b7280;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+
+                        .icon {
+                            width: 14px;
+                            height: 14px;
+                        }
+                    }
+
+                    .value {
+                        font-size: 0.875rem;
+                        font-weight: 600;
+                        color: #111827;
+
+                        &.text-success {
+                            color: #10b981 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .bb-customer-card-footer {
+        background: #f8f9fa;
+        border-top: 1px solid #e5e7eb;
+        padding: 1rem 1.25rem;
+
+        .btn {
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.15s ease-in-out;
+
+            .icon {
+                width: 16px;
+                height: 16px;
+            }
+
+            &.btn-danger {
+                &:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+                }
+            }
+        }
+    }
+}
+
+// Mobile Responsive for Return Detail & Form
+@media (max-width: 767.98px) {
+    .bb-customer-card.order-return-detail-card,
+    .bb-customer-card.order-info-card,
+    .bb-customer-card.return-form-card {
+        .bb-customer-card-header {
+            padding: 1rem;
+
+            .d-flex {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 0.75rem;
+            }
+        }
+
+        .bb-customer-card-body {
+            padding: 1rem;
+        }
+    }
+
+    .bb-customer-card.order-return-items-card {
+        .return-items-list {
+            .return-item-card {
+                .bb-customer-card-body {
+                    padding: 1rem;
+                }
+
+                .d-flex {
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+
+                .return-item-info {
+                    .row {
+                        .col-6 {
+                            margin-bottom: 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .bb-customer-card.return-form-card {
+        .return-products-list {
+            .return-product-card {
+                .d-flex {
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+
+                .return-product-controls {
+                    .row {
+                        .col-6 {
+                            margin-bottom: 0.75rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        .bb-customer-card-footer {
+            padding: 1rem;
+
+            .d-flex {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch !important;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    }
+}

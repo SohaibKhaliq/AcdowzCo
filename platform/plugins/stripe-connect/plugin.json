@@ -1,0 +1,15 @@
+{
+    "id": "botble/stripe-connect",
+    "name": "Stripe Connect",
+    "namespace": "Botble\\StripeConnect\\",
+    "provider": "Botble\\StripeConnect\\Providers\\StripeConnectServiceProvider",
+    "author": "Botble Technologies",
+    "url": "https://botble.com",
+    "version": "1.0.1",
+    "description": "Enables Stripe Connect for vendor payments and withdrawals.",
+    "minimum_core_version": "7.3.0",
+    "require": [
+        "botble/marketplace",
+        "botble/stripe"
+    ]
+}

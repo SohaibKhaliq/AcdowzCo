@@ -1,0 +1,10 @@
+{
+    "name": "botble/social-login",
+    "description": "Social login plugin",
+    "type": "package",
+    "require": {
+        "laravel/socialite": "^5.0",
+        "firebase/php-jwt": "^6.11",
+        "google/apiclient": "^2.18"
+    }
+}

@@ -1,0 +1,170 @@
+@use 'ultils' as *;
+
+[dir='rtl'] {
+    .lg-outer {
+        direction: ltr;
+    }
+
+    /* RTL support for customer cards - applied to all screen sizes */
+
+    /* RTL support for address cards */
+    .dashboard-address {
+        .bb-customer-card {
+            .bb-customer-card-info {
+                text-align: right;
+
+                .info-item {
+                    .label {
+                        margin-left: 8px;
+                        margin-right: 0;
+                    }
+
+                    .value {
+                        text-align: right !important;
+                    }
+                }
+            }
+
+            .bb-customer-card-footer {
+                justify-content: flex-end;
+            }
+        }
+    }
+
+    .bb-customer-card-list {
+        .bb-customer-card {
+            .bb-customer-card-header {
+                .bb-customer-card-title {
+                    .label {
+                        margin-left: 4px;
+                        margin-right: 0;
+                    }
+                }
+            }
+
+            .bb-customer-card-body {
+                .bb-customer-card-info {
+                    .info-item {
+                        .label {
+                            margin-left: 8px;
+                            margin-right: 0;
+                        }
+
+                        .value {
+                            text-align: left;
+                        }
+                    }
+                }
+
+                .bb-customer-card-image {
+                    margin-right: 0;
+                    margin-left: 16px;
+                }
+
+                .bb-customer-card-content {
+                    .bb-customer-card-details {
+                        .bb-customer-card-rating {
+                            .ecommerce-icon {
+                                margin-left: 0;
+                                margin-right: 4px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .bb-customer-card-footer {
+                justify-content: flex-start;
+            }
+        }
+    }
+
+    .#{$prefix}product {
+        &-attribute-swatch {
+            &-list {
+                &.color-swatch {
+                    span.bb-product-attribute-swatch-display {
+                        inset-inline-start: auto;
+                        inset-inline-end: 50%;
+                    }
+                }
+
+                &.visual-swatch {
+                    .#{$prefix}product-attribute-swatch-item {
+                        &:hover {
+                            & .#{$prefix}product-attribute-swatch-item-tooltip {
+                                transform: translate(50%) translateY(-10px);
+
+                                &::before {
+                                    transform: translate(50%);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &-item {
+                &-tooltip {
+                    transform: translateX(50%) translateY(2px);
+
+                    &::before {
+                        transform: translateX(50%);
+                    }
+                }
+            }
+        }
+
+        @media (max-width: 767px) {
+            &-gallery-thumbnails {
+                .slick-arrow {
+                    &.slick-prev {
+                        transform: rotate(180deg);
+                    }
+
+                    &.slick-next {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+        }
+    }
+
+    .bb-product-gallery-horizontal {
+        .slick-arrow.slick-next, .slick-arrow.slick-prev {
+            transform: rotate(180deg) !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .bb-product-gallery-horizontal {
+            .slick-arrow.slick-next {
+                inset-inline-start: 91% !important;
+            }
+        }
+    }
+
+    .bb-product-gallery-thumbnails {
+        .video-thumbnail {
+            svg {
+                transform: translate(100%, -50%);
+            }
+        }
+
+        &.slick-vertical {
+            .slick-arrow {
+                inset-inline-start: calc(43% - 17px);
+            }
+        }
+    }
+
+    @media (max-width: 991px) {
+        .bb-filter-offcanvas-area {
+            transform: translateX(calc(100% + 80px));
+
+            &.offcanvas-opened {
+                transform: translateX(0);
+            }
+        }
+    }
+}

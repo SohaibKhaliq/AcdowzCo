@@ -1,0 +1,15 @@
+{
+    "id": "botble/paypal-payout",
+    "name": "PayPal Payout",
+    "namespace": "Botble\\PayPalPayout\\",
+    "provider": "Botble\\PayPalPayout\\Providers\\PayPalPayoutServiceProvider",
+    "author": "Botble Technologies",
+    "url": "https://botble.com",
+    "version": "1.0.3",
+    "description": "PayPal Payout payment gateway integration",
+    "minimum_core_version": "7.3.0",
+    "require": [
+        "payment",
+        "paypal"
+    ]
+}

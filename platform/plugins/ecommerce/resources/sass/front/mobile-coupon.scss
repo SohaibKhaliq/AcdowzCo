@@ -1,0 +1,389 @@
+// Mobile Coupon Styles
+.checkout__coupon-mobile {
+    margin-bottom: 30px;
+
+    .btn {
+        border-radius: 6px;
+        border-color: #dee2e6;
+        background-color: #f8f9fa;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+            transform: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        border-radius: 12px;
+    }
+
+    .text-dark {
+        color: #495057 !important;
+    }
+}
+
+// Mobile Coupon Modal
+#mobile-coupon-modal {
+    .modal-dialog {
+        margin: 0;
+
+        @media (max-width: 575.98px) {
+            height: 100vh;
+            max-width: 100%;
+        }
+    }
+
+    .modal-content {
+        @media (max-width: 575.98px) {
+            height: 100vh;
+            border-radius: 0;
+        }
+    }
+
+    .modal-header {
+        padding: 20px 24px 12px;
+
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .modal-body {
+        padding: 12px 24px;
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+
+        @media (max-width: 575.98px) {
+            max-height: calc(100vh - 160px);
+        }
+    }
+
+    .modal-footer {
+        padding: 12px 24px 24px;
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 12px 16px;
+        }
+    }
+}
+
+// Mobile Coupon Items
+.mobile-coupon-item {
+    border: 1px solid #e9ecef !important;
+    transition: all 0.2s ease;
+    background-color: #fff;
+
+    &:hover {
+        border-color: #007bff !important;
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+        transform: translateY(-1px);
+    }
+
+    // Active state - applied coupon highlighting (matches desktop)
+    &.active {
+        background-color: var(--bs-primary);
+        color: #ffffff;
+        border-color: var(--bs-primary) !important;
+        box-shadow: 0 2px 12px rgba(0, 123, 255, 0.15);
+
+        &:hover {
+            border-color: var(--bs-primary) !important;
+            background-color: var(--bs-primary);
+            transform: translateY(-1px);
+        }
+
+        .mobile-coupon-icon {
+            background-color: var(--bs-primary) !important;
+            filter: brightness(85%);
+
+            svg {
+                color: #ffffff !important;
+            }
+        }
+
+        .mobile-coupon-value h6 {
+            color: #ffffff !important;
+        }
+
+        .mobile-coupon-description small {
+            color: #ffffff !important;
+        }
+
+        .mobile-coupon-code .badge {
+            background-color: var(--bs-primary) !important;
+            filter: brightness(85%);
+            color: #ffffff !important;
+            border-color: var(--bs-primary) !important;
+        }
+
+        // Applied checkmark indicator
+        .position-absolute {
+            z-index: 10;
+
+            .bg-success {
+                box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+
+                svg {
+                    color: #fff !important;
+                }
+            }
+        }
+    }
+
+    .mobile-coupon-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .mobile-coupon-value {
+        h6 {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--bs-primary);
+            line-height: 1.3;
+        }
+
+        small {
+            font-size: 0.75rem;
+            font-weight: normal;
+            font-style: italic;
+        }
+    }
+
+    .mobile-coupon-description {
+        small {
+            font-size: 13px;
+            color: #4d4d4d;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: 0.2s all;
+        }
+    }
+
+    .mobile-coupon-code {
+        .badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            background: rgb(239, 239, 239);
+            color: #000;
+            border: none;
+        }
+
+        .btn {
+            background: var(--bs-primary);
+            color: #ffffff;
+            border: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: 0.2s all;
+            box-sizing: border-box;
+
+            &.remove-coupon-code {
+                background: #ffffff;
+                color: var(--bs-primary);
+                border: 1px solid var(--bs-primary);
+            }
+        }
+    }
+
+    // Button styling for active state
+    &.active {
+        .mobile-coupon-code .btn {
+            background: #ffffff;
+            color: var(--bs-primary);
+            border: 1px solid var(--bs-primary);
+        }
+    }
+}
+
+// Loading state for buttons
+.mobile-coupon-item .btn {
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .fa-spinner {
+        animation: spin 1s linear infinite;
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+// Responsive adjustments
+@media (max-width: 575.98px) {
+    .mobile-coupon-item {
+        margin-bottom: 12px !important;
+        padding: 16px !important;
+    }
+
+    .checkout__coupon-mobile {
+        margin-bottom: 30px;
+
+        .btn {
+            padding: 16px;
+            font-size: 0.95rem;
+            border-radius: 6px;
+        }
+    }
+}
+
+// Dark mode support (if applicable)
+@media (prefers-color-scheme: dark) {
+    .mobile-coupon-item {
+        border-color: #495057 !important;
+        background-color: #212529;
+
+        &:hover {
+            border-color: #007bff !important;
+            background-color: #1a1d20;
+        }
+
+        &:has(.mobile-coupon-radio:checked) {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+
+        .mobile-coupon-icon {
+            background-color: rgba(0, 123, 255, 0.2) !important;
+        }
+
+        .badge {
+            background-color: #495057 !important;
+            color: #fff !important;
+        }
+    }
+}
+
+// Accessibility improvements
+.mobile-coupon-item {
+    &:focus-within {
+        outline: 2px solid #007bff;
+        outline-offset: 2px;
+    }
+}
+
+// Animation for modal appearance
+#mobile-coupon-modal {
+    .modal-dialog {
+        transition: transform 0.3s ease-out;
+    }
+
+    &.show .modal-dialog {
+        transform: none;
+    }
+}
+
+// Smooth scrolling for modal body
+.modal-body {
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+
+        &:hover {
+            background: #a8a8a8;
+        }
+    }
+}
+.checkout-discount-section,
+.coupon-wrapper {
+    transition: all 0.3s ease;
+}
+
+// Mobile coupon section visibility
+#mobile-coupon-section {
+    transition: all 0.3s ease;
+
+    &.hidden {
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+    }
+}
+
+// Applied coupon indicator
+#mobile-applied-coupon {
+    transition: all 0.3s ease;
+
+    &.hidden {
+        opacity: 0;
+        transform: translateY(-5px);
+        max-height: 0;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+// Ensure manual coupon entry is properly spaced on mobile
+@media (max-width: 767.98px) {
+    .checkout-discount-section {
+        margin-top: 20px;
+
+        .btn-open-coupon-form {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            color: #495057;
+            text-decoration: none;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background-color: #e9ecef;
+                border-color: #adb5bd;
+                color: #495057;
+                text-decoration: none;
+            }
+        }
+    }
+
+    .coupon-wrapper {
+        margin-top: 15px;
+    }
+}

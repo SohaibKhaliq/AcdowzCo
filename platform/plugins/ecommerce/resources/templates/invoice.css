@@ -1,0 +1,331 @@
+body {
+    font-size: 15px;
+    position: relative;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table tr td {
+    padding: 0;
+}
+
+table tr td:last-child {
+    text-align: right;
+}
+
+.bold, strong, b, .total, .stamp {
+    font-weight: 700;
+}
+
+.right {
+    text-align: right;
+}
+
+.large {
+    font-size: 1.75em;
+}
+
+.total {
+    color: #fb7578;
+}
+
+.large.total img {
+    width: 14px;
+}
+
+.logo-container {
+    margin: 20px 0 50px;
+}
+
+.invoice-info-container {
+    font-size: .875em;
+}
+
+.invoice-info-container td {
+    padding: 4px 0;
+}
+
+.line-items-container {
+    font-size: .875em;
+    margin: 70px 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.line-items-container th {
+    border-bottom: 2px solid #ddd;
+    color: #999;
+    font-size: .75em;
+    padding: 12px 8px 15px;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #f8f9fa;
+}
+
+.line-items-container th:last-child {
+    text-align: right;
+}
+
+.line-items-container td {
+    padding: 15px 8px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+}
+
+.line-items-container td:first-child {
+    padding-left: 0;
+}
+
+.line-items-container td:last-child {
+    padding-right: 0;
+}
+
+.line-items-container tbody tr:first-child td {
+    padding-top: 25px;
+}
+
+.line-items-container.has-bottom-border tbody tr:last-child td {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 25px;
+}
+
+.line-items-container .product-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.line-items-container .product-sku {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.line-items-container .option-item {
+    margin-bottom: 2px;
+    color: #666;
+}
+
+.line-items-container .option-item:last-child {
+    margin-bottom: 0;
+}
+
+.line-items-container .tax-amount {
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.line-items-container .tax-details {
+    font-size: 0.85em;
+    color: #666;
+}
+
+.line-items-container .tax-class {
+    padding: 1px 4px;
+    font-size: 0.8em;
+}
+
+.line-items-container .text-muted {
+    color: #999;
+}
+
+.line-items-container .product-row:hover {
+    background-color: #fafbfc;
+}
+
+.line-items-container .product-row:last-child td {
+    border-bottom: none;
+}
+
+.line-items-container th.heading-description {
+    width: 35%;
+}
+
+.line-items-container th.heading-options {
+    width: 25%;
+}
+
+.line-items-container th.heading-quantity {
+    width: 8%;
+    text-align: center;
+}
+
+.line-items-container th.heading-price {
+    text-align: right;
+    width: 12%;
+}
+
+.line-items-container th.heading-tax {
+    text-align: right;
+    width: 12%;
+}
+
+.line-items-container th.heading-subtotal {
+    text-align: right;
+    width: 12%;
+}
+
+.line-items-container .qty-cell {
+    text-align: center;
+}
+
+.line-items-container .price-cell {
+    text-align: right;
+    font-weight: bold;
+}
+
+.line-items-container .tax-cell {
+    text-align: right;
+}
+
+.line-items-container .total-cell {
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+}
+
+.payment-info {
+    font-size: .875em;
+    line-height: 1.5;
+    width: 38%
+}
+
+small {
+    font-size: 80%;
+}
+
+.stamp {
+    border: 2px solid #555;
+    color: #555;
+    display: inline-block;
+    font-size: 18px;
+    line-height: 1;
+    opacity: .5;
+    padding: .3rem .75rem;
+    position: fixed;
+    text-transform: uppercase;
+    top: 40%;
+    left: 40%;
+    transform: rotate(-14deg);
+}
+
+.is-failed {
+    border-color: #d23;
+    color: #d23;
+}
+
+.is-completed {
+    border-color: #0a9928;
+    color: #0a9928;
+}
+
+/* RTL (Right-to-Left) Language Support */
+body[dir=rtl] {
+    direction: rtl;
+}
+
+body[dir=rtl] .right {
+    text-align: left;
+}
+
+body[dir=rtl] table tr td:last-child {
+    text-align: left;
+}
+
+body[dir=rtl] .line-items-container th:first-child {
+    padding-right: 0;
+    padding-left: 8px;
+}
+
+body[dir=rtl] .line-items-container th:last-child {
+    text-align: left;
+    padding-left: 0;
+    padding-right: 8px;
+}
+
+body[dir=rtl] .line-items-container th.heading-price {
+    text-align: left;
+}
+
+body[dir=rtl] .line-items-container th.heading-tax {
+    text-align: left;
+}
+
+body[dir=rtl] .line-items-container th.heading-subtotal {
+    text-align: left;
+}
+
+body[dir=rtl] .line-items-container th.heading-quantity {
+    text-align: center;
+}
+
+/* RTL Table Cells */
+body[dir=rtl] .line-items-container td:first-child {
+    padding-right: 0;
+    padding-left: 8px;
+}
+
+body[dir=rtl] .line-items-container td:last-child {
+    padding-left: 0;
+    padding-right: 8px;
+}
+
+body[dir=rtl] .line-items-container .qty-cell {
+    text-align: center;
+}
+
+body[dir=rtl] .line-items-container .price-cell {
+    text-align: left;
+}
+
+body[dir=rtl] .line-items-container .tax-cell {
+    text-align: left;
+}
+
+body[dir=rtl] .line-items-container .total-cell {
+    text-align: left;
+}
+
+/* RTL Stamp positioning */
+body[dir=rtl] .stamp {
+    left: auto;
+    right: 40%;
+    transform: rotate(14deg);
+}
+
+/* RTL Payment info */
+body[dir=rtl] .payment-info {
+    text-align: right;
+}
+
+/* RTL Tax class badges */
+body[dir=rtl] .line-items-container .tax-class {
+    margin-left: 2px;
+    margin-right: 0;
+}
+
+/* RTL Product information */
+body[dir=rtl] .line-items-container .product-name {
+    text-align: right;
+}
+
+body[dir=rtl] .line-items-container .product-sku {
+    text-align: right;
+}
+
+/* RTL Option items */
+body[dir=rtl] .line-items-container .option-item {
+    text-align: right;
+}
+
+/* RTL Tax details */
+body[dir=rtl] .line-items-container .tax-details {
+    text-align: left;
+}
+
+body[dir=rtl] .line-items-container .tax-amount {
+    text-align: left;
+}
