@@ -127,7 +127,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                     'parent_id' => 'cms-plugins-marketplace',
                     'name' => 'plugins/marketplace::store.name',
                     'icon' => 'ti ti-building-store',
-                    'url' => fn () => route('marketplace.store.index'),
+                    'url' => fn() => route('marketplace.store.index'),
                     'permissions' => ['marketplace.store.index'],
                 ])
                 ->registerItem([
@@ -136,7 +136,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                     'parent_id' => 'cms-plugins-marketplace',
                     'name' => 'plugins/marketplace::withdrawal.name',
                     'icon' => 'ti ti-cash-banknote',
-                    'url' => fn () => route('marketplace.withdrawal.index'),
+                    'url' => fn() => route('marketplace.withdrawal.index'),
                     'permissions' => ['marketplace.withdrawal.index'],
                 ])
                 ->registerItem([
@@ -145,7 +145,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                     'parent_id' => 'cms-plugins-marketplace',
                     'name' => 'plugins/marketplace::marketplace.vendors',
                     'icon' => 'ti ti-users',
-                    'url' => fn () => route('marketplace.vendors.index'),
+                    'url' => fn() => route('marketplace.vendors.index'),
                     'permissions' => ['marketplace.vendors.index'],
                 ])
                 ->when(
@@ -158,7 +158,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                                 'parent_id' => 'cms-plugins-marketplace',
                                 'name' => 'plugins/marketplace::unverified-vendor.name',
                                 'icon' => 'ti ti-user-question',
-                                'url' => fn () => route('marketplace.unverified-vendors.index'),
+                                'url' => fn() => route('marketplace.unverified-vendors.index'),
                                 'permissions' => ['marketplace.unverified-vendors.index'],
                             ]);
                     }
@@ -169,22 +169,40 @@ class MarketplaceServiceProvider extends ServiceProvider
                     'parent_id' => 'cms-plugins-marketplace',
                     'name' => 'plugins/marketplace::marketplace.reports.name',
                     'icon' => 'ti ti-chart-bar',
-                    'url' => fn () => route('marketplace.reports.index'),
+                    'url' => fn() => route('marketplace.reports.index'),
                     'permissions' => ['marketplace.reports'],
+                ])
+                ->registerItem([
+                    'id' => 'cms-plugins-marketplace-vendor-warnings',
+                    'priority' => 6,
+                    'parent_id' => 'cms-plugins-marketplace',
+                    'name' => 'plugins/marketplace::marketplace.vendor-warnings',
+                    'icon' => 'ti ti-alert-triangle',
+                    'url' => fn() => route('marketplace.vendor-warnings.index'),
+                    'permissions' => ['marketplace.store.edit'],
+                ])
+                ->registerItem([
+                    'id' => 'cms-plugins-marketplace-product-oversight',
+                    'priority' => 7,
+                    'parent_id' => 'cms-plugins-marketplace',
+                    'name' => 'plugins/marketplace::marketplace.product-oversight',
+                    'icon' => 'ti ti-eye',
+                    'url' => fn() => route('marketplace.product-oversight.index'),
+                    'permissions' => ['products.index'],
                 ])
                 ->when(
                     MarketplaceHelper::isEnabledMessagingSystem(),
                     function (DashboardMenuSupport $dashboardMenu): void {
                         $dashboardMenu
                             ->registerItem([
-                            'id' => 'cms-plugins-marketplace-messages',
-                            'priority' => 10,
-                            'parent_id' => 'cms-plugins-marketplace',
-                            'name' => 'plugins/marketplace::message.name',
-                            'icon' => 'ti ti-messages',
-                            'url' => fn () => route('marketplace.messages.index'),
-                            'permissions' => ['marketplace.messages.index'],
-                        ]);
+                                'id' => 'cms-plugins-marketplace-messages',
+                                'priority' => 10,
+                                'parent_id' => 'cms-plugins-marketplace',
+                                'name' => 'plugins/marketplace::message.name',
+                                'icon' => 'ti ti-messages',
+                                'url' => fn() => route('marketplace.messages.index'),
+                                'permissions' => ['marketplace.messages.index'],
+                            ]);
                     }
                 );
         });
@@ -195,14 +213,14 @@ class MarketplaceServiceProvider extends ServiceProvider
                     'id' => 'marketplace.vendor.dashboard',
                     'priority' => 1,
                     'name' => __('Dashboard'),
-                    'url' => fn () => route('marketplace.vendor.dashboard'),
+                    'url' => fn() => route('marketplace.vendor.dashboard'),
                     'icon' => 'ti ti-home',
                 ])
                 ->registerItem([
                     'id' => 'marketplace.vendor.products',
                     'priority' => 2,
                     'name' => __('Products'),
-                    'url' => fn () => route('marketplace.vendor.products.index'),
+                    'url' => fn() => route('marketplace.vendor.products.index'),
                     'icon' => 'ti ti-package',
                 ])
                 ->when(EcommerceHelper::isProductSpecificationEnabled(), function (DashboardMenuSupport $dashboardMenu): void {
@@ -219,7 +237,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                             'parent_id' => 'cms-plugins-product-specification',
                             'priority' => 0,
                             'name' => __('Specification Groups'),
-                            'url' => fn () => route('marketplace.vendor.specification-groups.index'),
+                            'url' => fn() => route('marketplace.vendor.specification-groups.index'),
                             'icon' => 'ti ti-folder',
                         ])
                         ->registerItem([
@@ -227,7 +245,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                             'parent_id' => 'cms-plugins-product-specification',
                             'priority' => 10,
                             'name' => __('Specification Attributes'),
-                            'url' => fn () => route('marketplace.vendor.specification-attributes.index'),
+                            'url' => fn() => route('marketplace.vendor.specification-attributes.index'),
                             'icon' => 'ti ti-list-details',
                         ])
                         ->registerItem([
@@ -235,7 +253,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                             'parent_id' => 'cms-plugins-product-specification',
                             'priority' => 20,
                             'name' => __('Specification Tables'),
-                            'url' => fn () => route('marketplace.vendor.specification-tables.index'),
+                            'url' => fn() => route('marketplace.vendor.specification-tables.index'),
                             'icon' => 'ti ti-table',
                         ]);
                 })
@@ -243,35 +261,35 @@ class MarketplaceServiceProvider extends ServiceProvider
                     'id' => 'marketplace.vendor.orders',
                     'priority' => 3,
                     'name' => __('Orders'),
-                    'url' => fn () => route('marketplace.vendor.orders.index'),
+                    'url' => fn() => route('marketplace.vendor.orders.index'),
                     'icon' => 'ti ti-shopping-cart',
                 ])
                 ->registerItem([
                     'id' => 'marketplace.vendor.discounts',
                     'priority' => 4,
                     'name' => __('Coupons'),
-                    'url' => fn () => route('marketplace.vendor.discounts.index'),
+                    'url' => fn() => route('marketplace.vendor.discounts.index'),
                     'icon' => 'ti ti-tag',
                 ])
                 ->registerItem([
                     'id' => 'marketplace.vendor.withdrawals',
                     'priority' => 5,
                     'name' => __('Withdrawals'),
-                    'url' => fn () => route('marketplace.vendor.withdrawals.index'),
+                    'url' => fn() => route('marketplace.vendor.withdrawals.index'),
                     'icon' => 'ti ti-cash',
                 ])
                 ->registerItem([
                     'id' => 'marketplace.vendor.revenues',
                     'priority' => 6,
                     'name' => __('Revenues'),
-                    'url' => fn () => route('marketplace.vendor.revenues.index'),
+                    'url' => fn() => route('marketplace.vendor.revenues.index'),
                     'icon' => 'ti ti-wallet',
                 ])
                 ->registerItem([
                     'id' => 'marketplace.vendor.settings',
                     'priority' => 999,
                     'name' => __('Settings'),
-                    'url' => fn () => route('marketplace.vendor.settings'),
+                    'url' => fn() => route('marketplace.vendor.settings'),
                     'icon' => 'ti ti-settings',
                 ])
                 ->when(MarketplaceHelper::isEnabledMessagingSystem(), function (DashboardMenuSupport $dashboardMenu) {
@@ -279,7 +297,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                         'id' => 'marketplace.vendor.messages',
                         'priority' => 8,
                         'name' => __('Messages'),
-                        'url' => fn () => route('marketplace.vendor.messages.index'),
+                        'url' => fn() => route('marketplace.vendor.messages.index'),
                         'icon' => 'ti ti-messages',
                     ]);
                 })
@@ -288,7 +306,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                         'id' => 'marketplace.vendor.reviews',
                         'priority' => 5,
                         'name' => __('Reviews'),
-                        'url' => fn () => route('marketplace.vendor.reviews.index'),
+                        'url' => fn() => route('marketplace.vendor.reviews.index'),
                         'icon' => 'ti ti-star',
                     ]);
                 })
@@ -297,7 +315,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                         'id' => 'marketplace.vendor.order-returns',
                         'priority' => 3,
                         'name' => __('Order Returns'),
-                        'url' => fn () => route('marketplace.vendor.order-returns.index'),
+                        'url' => fn() => route('marketplace.vendor.order-returns.index'),
                         'icon' => 'ti ti-reload',
                     ]);
                 })
@@ -306,7 +324,7 @@ class MarketplaceServiceProvider extends ServiceProvider
                         'id' => 'marketplace.vendor.shipments',
                         'priority' => 3,
                         'name' => __('Shipments'),
-                        'url' => fn () => route('marketplace.vendor.shipments.index'),
+                        'url' => fn() => route('marketplace.vendor.shipments.index'),
                         'icon' => 'ti ti-truck',
                     ]);
                 });
@@ -320,21 +338,21 @@ class MarketplaceServiceProvider extends ServiceProvider
                             'id' => 'marketplace.vendor.dashboard',
                             'priority' => 990,
                             'name' => __('Vendor Dashboard'),
-                            'url' => fn () => route('marketplace.vendor.dashboard'),
+                            'url' => fn() => route('marketplace.vendor.dashboard'),
                             'icon' => 'ti ti-building-store',
                         ]);
                 }, function (): void {
                     DashboardMenu::make()
                         ->when(
                             MarketplaceHelper::isVendorRegistrationEnabled()
-                            && ! MarketplaceHelper::getSetting('hide_become_vendor_menu_in_customer_dashboard', false),
+                                && ! MarketplaceHelper::getSetting('hide_become_vendor_menu_in_customer_dashboard', false),
                             function () {
                                 return DashboardMenu::make()
                                     ->registerItem([
                                         'id' => 'marketplace.vendor.become-vendor',
                                         'priority' => 991,
                                         'name' => __('Become A Vendor'),
-                                        'url' => fn () => route('marketplace.vendor.become-vendor'),
+                                        'url' => fn() => route('marketplace.vendor.become-vendor'),
                                         'icon' => 'ti ti-building-store',
                                     ]);
                             }
@@ -365,7 +383,7 @@ class MarketplaceServiceProvider extends ServiceProvider
         PanelSectionManager::beforeRendering(function (): void {
             PanelSectionManager::default()->registerItem(
                 SettingEcommercePanelSection::class,
-                fn () => PanelSectionItem::make('settings.ecommerce.marketplace')
+                fn() => PanelSectionItem::make('settings.ecommerce.marketplace')
                     ->setTitle(trans('plugins/ecommerce::setting.marketplace.name'))
                     ->withIcon('ti ti-building-store')
                     ->withDescription(trans('plugins/ecommerce::setting.marketplace.description'))
@@ -375,7 +393,7 @@ class MarketplaceServiceProvider extends ServiceProvider
         });
 
         SlugHelper::registering(function (): void {
-            SlugHelper::registerModule(Store::class, fn () => trans('plugins/marketplace::store.stores'));
+            SlugHelper::registerModule(Store::class, fn() => trans('plugins/marketplace::store.stores'));
             SlugHelper::setPrefix(Store::class, 'stores');
         });
 
@@ -390,7 +408,7 @@ class MarketplaceServiceProvider extends ServiceProvider
             Revenue::query()->where('customer_id', $customer->getKey())->delete();
             Withdrawal::query()->where('customer_id', $customer->getKey())->delete();
             VendorInfo::query()->where('customer_id', $customer->getKey())->delete();
-            Store::query()->where('customer_id', $customer->getKey())->each(fn (Store $store) => $store->delete());
+            Store::query()->where('customer_id', $customer->getKey())->each(fn(Store $store) => $store->delete());
         });
 
         $this->app['events']->listen('eloquent.deleted: ' . Customer::class, function (Customer $customer): void {
