@@ -286,6 +286,28 @@ Theme::registerRoutes(function (): void {
                 'as' => 'product-reviews',
                 'uses' => 'PublicController@getProductReviews',
             ]);
+
+            Route::group(['prefix' => 'reseller', 'as' => 'reseller.'], function (): void {
+                Route::get('dashboard', [
+                    'as' => 'dashboard',
+                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@dashboard',
+                ]);
+                
+                Route::post('toggle-status', [
+                    'as' => 'toggle-status',
+                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@toggleStatus',
+                ]);
+                
+                Route::get('analytics', [
+                    'as' => 'analytics',
+                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@analytics',
+                ]);
+                
+                Route::get('generate-link/{product?}', [
+                    'as' => 'generate-link',
+                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@generateLink',
+                ]);
+            });
         });
 
     Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers\Customers', 'as' => 'public.'], function (): void {
