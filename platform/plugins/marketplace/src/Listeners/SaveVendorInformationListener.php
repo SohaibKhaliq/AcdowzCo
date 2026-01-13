@@ -47,6 +47,11 @@ class SaveVendorInformationListener
                 'phone' => BaseHelper::clean($this->request->input('shop_phone')),
                 'email' => BaseHelper::clean($this->request->input('email')),
                 'customer_id' => $customer->getAuthIdentifier(),
+                'agreement_type' => $this->request->input('agreement_type', 'commission'),
+                'agreement_value' => $this->request->input('agreement_type') === 'commission' 
+                    ? MarketplaceHelper::getSetting('default_commission_rate', 5) 
+                    : 0,
+                'agreement_notes' => BaseHelper::clean($this->request->input('agreement_notes')),
             ]);
         }
 
