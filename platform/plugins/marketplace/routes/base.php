@@ -172,14 +172,40 @@ AdminHelper::registerRoutes(function (): void {
                     'uses' => 'MessageController@show',
                 ])->wherePrimaryKey();
             });
-        });
+            Route::group(['prefix' => 'ecommerce/products', 'as' => 'products.'], function (): void {
+                Route::post('approve-product/{id}', [
+                    'as' => 'approve-product',
+                    'uses' => 'ProductController@approveProduct',
+                    'permission' => 'products.edit',
+                ])->wherePrimaryKey();
+            });
 
-        Route::group(['prefix' => 'ecommerce/products', 'as' => 'products.'], function (): void {
-            Route::post('approve-product/{id}', [
-                'as' => 'approve-product',
-                'uses' => 'ProductController@approveProduct',
-                'permission' => 'products.edit',
-            ])->wherePrimaryKey();
+            Route::group(['prefix' => 'vendor-warnings', 'as' => 'vendor-warnings.'], function (): void {
+                Route::resource('', 'VendorWarningController')->parameters(['' => 'warning']);
+            });
+
+            Route::group(['prefix' => 'product-oversight', 'as' => 'product-oversight.'], function (): void {
+                Route::get('/', [
+                    'as' => 'index',
+                    'uses' => 'ProductOversightController@index',
+                    'permission' => 'products.index',
+                ]);
+                Route::post('{id}/approve', [
+                    'as' => 'approve',
+                    'uses' => 'ProductOversightController@approve',
+                    'permission' => 'products.edit',
+                ])->wherePrimaryKey();
+                Route::post('{id}/reject', [
+                    'as' => 'reject',
+                    'uses' => 'ProductOversightController@reject',
+                    'permission' => 'products.edit',
+                ])->wherePrimaryKey();
+                Route::post('bulk-delete', [
+                    'as' => 'bulk-delete',
+                    'uses' => 'ProductOversightController@bulkDelete',
+                    'permission' => 'products.destroy',
+                ]);
+            });
         });
     });
 });
