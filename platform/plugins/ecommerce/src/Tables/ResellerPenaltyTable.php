@@ -11,6 +11,7 @@ use Botble\Table\Columns\CreatedAtColumn;
 use Botble\Table\Columns\IdColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Route;
 
 class ResellerPenaltyTable extends TableAbstract
 {
@@ -86,7 +87,7 @@ class ResellerPenaltyTable extends TableAbstract
                         'reversed' => 'success',
                         default => 'secondary',
                     };
-                    
+
                     return Html::tag('span', ucfirst($item->status), ['class' => "badge bg-{$color}"]);
                 }),
             Column::make('issued_by')
@@ -99,6 +100,19 @@ class ResellerPenaltyTable extends TableAbstract
 
     public function buttons(): array
     {
-        return $this->addCreateButton(route('ecommerce.reseller-penalties.create'), 'ecommerce.reseller-penalties.create');
+        // Only add create button if the route exists
+        $routeName = null;
+
+        if (Route::has('ecommerce.reseller-penalties.create')) {
+            $routeName = 'ecommerce.reseller-penalties.create';
+        } elseif (Route::has('reseller-penalties.create')) {
+            $routeName = 'reseller-penalties.create';
+        }
+
+        if ($routeName) {
+            return $this->addCreateButton(route($routeName), $routeName);
+        }
+
+        return [];
     }
 }

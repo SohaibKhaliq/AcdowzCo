@@ -30,9 +30,13 @@ abstract class TableActionAbstract implements Htmlable, Stringable
 
     protected bool $displayAsDropdown = false;
 
-    public function __construct(protected string $name)
-    {
-    }
+    /**
+     * A callable to decide whether the action should be displayed for an item.
+     * Signature: fn($item): bool
+     */
+    protected $displayIfCallback = null;
+
+    public function __construct(protected string $name) {}
 
     public static function make(string $name): static
     {
@@ -96,6 +100,17 @@ abstract class TableActionAbstract implements Htmlable, Stringable
         return $this;
     }
 
+    /**
+     * Set a display callback to determine whether this action should be shown for the given item.
+     * The callback receives the item (model) and should return a boolean.
+     */
+    public function displayIf(callable $callback): static
+    {
+        $this->displayIfCallback = $callback;
+
+        return $this;
+    }
+
     public function getDataForView(): array
     {
         return array_merge([
@@ -105,8 +120,20 @@ abstract class TableActionAbstract implements Htmlable, Stringable
 
     public function render(): string
     {
+        // If a display callback is provided and returns false for the current item, render nothing
+        if ($this->displayIfCallback !== null) {
+            try {
+                if (! ($this->displayIfCallback)($this->getItem())) {
+                    return '';
+                }
+            } catch (\Throwable $e) {
+                // In case item is not set or callback throws, treat as not displayed
+                return '';
+            }
+        }
+
         return $this->rendering(
-            fn () => view(
+            fn() => view(
                 $this->displayAsDropdown ? $this->getDropdownItemView() : $this->getView(),
                 $this->getDataForView()
             )->render()
