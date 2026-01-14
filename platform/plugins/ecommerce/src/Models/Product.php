@@ -795,6 +795,21 @@ class Product extends BaseModel
         return $this->hasMany(Option::class)->oldest('order');
     }
 
+    public function countries(): BelongsToMany
+    {
+        return $this->belongsToMany(\Botble\Location\Models\Country::class, 'ec_product_countries', 'product_id', 'country_id')
+            ->withTimestamps();
+    }
+
+    public function isAvailableInCountry($countryId): bool
+    {
+        if (!$countryId) {
+            return true;
+        }
+
+        return $this->countries()->where('countries.id', $countryId)->exists();
+    }
+
     public function generateSku(): float|string|null
     {
         if (
