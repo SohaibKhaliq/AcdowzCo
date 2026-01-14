@@ -38,6 +38,24 @@ AdminHelper::registerRoutes(function (): void {
                     'permission' => 'marketplace.store.edit',
                 ])->wherePrimaryKey();
 
+                Route::get('{id}/shipping-countries', [
+                    'as' => 'shipping-countries.index',
+                    'uses' => 'StoreShippingController@index',
+                    'permission' => 'vendor.shipping.manage',
+                ])->wherePrimaryKey();
+
+                Route::post('{id}/shipping-countries', [
+                    'as' => 'shipping-countries.store',
+                    'uses' => 'StoreShippingController@store',
+                    'permission' => 'vendor.shipping.manage',
+                ])->wherePrimaryKey();
+
+                Route::post('bulk-assign-shipping', [
+                    'as' => 'bulk-assign-shipping',
+                    'uses' => 'StoreShippingController@bulkAssign',
+                    'permission' => 'vendor.shipping.manage',
+                ]);
+
                 Route::group(['prefix' => 'revenues', 'as' => 'revenue.'], function (): void {
                     Route::match(['GET', 'POST'], 'list/{id}', [
                         'as' => 'index',
