@@ -206,6 +206,27 @@ AdminHelper::registerRoutes(function (): void {
                     'permission' => 'products.destroy',
                 ]);
             });
+
+            Route::group(['prefix' => 'subscription-plans', 'as' => 'subscription-plans.'], function (): void {
+                Route::resource('', 'SubscriptionPlanController')->parameters(['' => 'plan']);
+            });
+
+            Route::group(['prefix' => 'vendor-subscriptions', 'as' => 'vendor-subscriptions.'], function (): void {
+                Route::match(['GET', 'POST'], '/', [
+                    'as' => 'index',
+                    'uses' => 'VendorSubscriptionController@index',
+                ]);
+
+                Route::get('show/{id}', [
+                    'as' => 'show',
+                    'uses' => 'VendorSubscriptionController@show',
+                ])->wherePrimaryKey();
+
+                Route::post('cancel/{id}', [
+                    'as' => 'cancel',
+                    'uses' => 'VendorSubscriptionController@cancel',
+                ])->wherePrimaryKey();
+            });
         });
     });
 });
