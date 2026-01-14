@@ -948,6 +948,15 @@ class EcommerceServiceProvider extends ServiceProvider
                     'url' => fn() => route('reseller-commissions.index'),
                     'permissions' => ['customers.index'],
                 ])
+                ->registerItem([
+                    'id' => 'cms-plugins-ecommerce-reseller-penalties',
+                    'priority' => 201,
+                    'parent_id' => 'cms-plugins-ecommerce',
+                    'name' => 'plugins/ecommerce::reseller.penalties.name',
+                    'icon' => 'ti ti-alert-circle',
+                    'url' => fn() => route('ecommerce.reseller-penalties.index'),
+                    'permissions' => ['customers.index'],
+                ])
                 ->when(EcommerceHelper::isProductSpecificationEnabled(), function (DashboardMenuSupport $dashboardMenu): void {
                     $dashboardMenu
                         ->registerItem([
