@@ -318,5 +318,43 @@ AdminHelper::registerRoutes(function (): void {
                 'permission' => 'customers.index',
             ])->wherePrimaryKey();
         });
+
+        Route::group(['prefix' => 'reseller-penalties', 'as' => 'reseller-penalties.'], function (): void {
+            Route::match(['GET', 'POST'], '/', [
+                'as' => 'index',
+                'uses' => 'ResellerPenaltyController@index',
+                'permission' => 'customers.index',
+            ]);
+
+            Route::get('create', [
+                'as' => 'create',
+                'uses' => 'ResellerPenaltyController@create',
+                'permission' => 'customers.edit',
+            ]);
+
+            Route::post('store', [
+                'as' => 'store',
+                'uses' => 'ResellerPenaltyController@store',
+                'permission' => 'customers.edit',
+            ]);
+
+            Route::get('show/{id}', [
+                'as' => 'show',
+                'uses' => 'ResellerPenaltyController@show',
+                'permission' => 'customers.index',
+            ])->wherePrimaryKey();
+
+            Route::post('reverse/{id}', [
+                'as' => 'reverse',
+                'uses' => 'ResellerPenaltyController@reverse',
+                'permission' => 'customers.edit',
+            ])->wherePrimaryKey();
+
+            Route::get('ajax/orders', [
+                'as' => 'ajax.orders',
+                'uses' => 'ResellerPenaltyController@getOrders',
+                'permission' => 'customers.index',
+            ]);
+        });
     });
 });
