@@ -235,6 +235,33 @@ class Store extends BaseModel
         return $this->hasMany(VendorWarning::class, 'store_id')->where('acknowledged', false);
     }
 
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(VendorSubscription::class, 'store_id');
+    }
+
+    public function activeSubscription()
+    {
+        return $this->hasOne(VendorSubscription::class, 'store_id')
+            ->where('status', 'active')
+            ->where('expires_at', '>', now());
+    }
+
+    public function hasActiveSubscription(): bool
+    {
+        return $this->activeSubscription()->exists();
+    }
+
+    public function canBeVerified(): bool
+    {
+        if (!$this->hasActiveSubscription()) {
+            return false;
+        }
+
+        $subscription = $this->activeSubscription()->first();
+        return $subscription && $subscription->plan && $subscription->plan->verified_eligible;
+    }
+
     public function newEloquentBuilder($query): StoreQueryBuilder
     {
         return new StoreQueryBuilder($query);
