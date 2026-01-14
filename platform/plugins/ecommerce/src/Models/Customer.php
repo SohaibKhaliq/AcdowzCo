@@ -170,6 +170,37 @@ class Customer extends BaseModel implements
         return !$wallet || !$wallet->is_blocked;
     }
 
+    public function preferredCountry(): BelongsTo
+    {
+        return $this->belongsTo(\Botble\Location\Models\Country::class, 'preferred_country_id');
+    }
+
+    public function countryHistory(): HasMany
+    {
+        return $this->hasMany(CustomerCountry::class);
+    }
+
+    public function getCurrentCountryId(): ?int
+    {
+        // Try preferred country first
+        if ($this->preferred_country_id) {
+            return $this->preferred_country_id;
+        }
+
+        // Then try last detected country
+        $lastCountry = $this->countryHistory()->latest()->first();
+        if ($lastCountry) {
+            return $lastCountry->country_id;
+        }
+
+        // Fall back to default country
+        $defaultCountry = \Botble\Location\Models\Country::query()
+            ->where('is_default', true)
+            ->first();
+
+        return $defaultCountry?->id;
+    }
+
     public function generateResellerLink(int $productId = null): string
     {
         $baseUrl = url('/');
