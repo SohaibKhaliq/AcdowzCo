@@ -37,6 +37,7 @@ use Botble\Ecommerce\Services\HandleRemoveCouponService;
 use Botble\Ecommerce\Services\HandleShippingFeeService;
 use Botble\Ecommerce\Services\HandleTaxService;
 use Botble\Optimize\Facades\OptimizerHelper;
+use Botble\Payment\Enums\PaymentMethodEnum;
 use Botble\Payment\Enums\PaymentStatusEnum;
 use Botble\Payment\Supports\PaymentFeeHelper;
 use Botble\Payment\Supports\PaymentHelper;
@@ -772,6 +773,9 @@ class PublicCheckoutController extends BaseController
         // Store payment fee in request
         $request->merge(['payment_fee' => $paymentFee]);
 
+        $isCOD = $paymentMethod === 'cod' || $paymentMethod === PaymentMethodEnum::COD;
+        $paymentStatus = $isCOD ? 'pending' : ($orderAmount > 0 ? 'pending' : 'paid');
+
         $request->merge([
             'amount' => $orderAmount ?: 0,
             'currency' => $request->input('currency', strtoupper(get_application_currency()->title)),
@@ -786,6 +790,8 @@ class PublicCheckoutController extends BaseController
             'discount_amount' => $promotionDiscountAmount + $couponDiscountAmount,
             'status' => OrderStatusEnum::PENDING,
             'token' => $token,
+            'payment_method' => $paymentMethod,
+            'payment_status' => $paymentStatus,
         ]);
 
         /**
@@ -870,6 +876,13 @@ class PublicCheckoutController extends BaseController
         ]);
 
         do_action('ecommerce_before_processing_payment', $products, $request, $token, $sessionData);
+
+        // Handle COD orders - skip payment processing
+        if ($paymentMethod === 'cod' || $paymentMethod === PaymentMethodEnum::COD) {
+            OrderHelper::processOrder($order->getKey());
+            
+            return redirect()->to(route('public.checkout.success', OrderHelper::getOrderSessionToken()));
+        }
 
         if (! is_plugin_active('payment') || ! $orderAmount) {
             OrderHelper::processOrder($order->getKey());
