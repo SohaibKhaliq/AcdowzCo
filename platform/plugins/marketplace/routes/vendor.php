@@ -236,6 +236,11 @@ Route::group([
             'as' => 'download-proof',
             'uses' => 'OrderController@downloadProof',
         ]);
+
+        Route::post('{order}/tracking-id', [
+            'as' => 'update-tracking-id',
+            'uses' => 'OrderTrackingController@updateTrackingId',
+        ])->wherePrimaryKey('order');
     });
 
     Route::group(['prefix' => 'order-returns', 'as' => 'order-returns.'], function (): void {
