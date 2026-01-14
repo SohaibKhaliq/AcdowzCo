@@ -356,5 +356,25 @@ AdminHelper::registerRoutes(function (): void {
                 'permission' => 'customers.index',
             ]);
         });
+
+        Route::group(['prefix' => 'products', 'as' => 'products.'], function (): void {
+            Route::get('{id}/countries', [
+                'as' => 'countries.index',
+                'uses' => 'ProductCountryController@index',
+                'permission' => 'product.country.assign',
+            ])->wherePrimaryKey();
+
+            Route::post('{id}/countries', [
+                'as' => 'countries.store',
+                'uses' => 'ProductCountryController@store',
+                'permission' => 'product.country.assign',
+            ])->wherePrimaryKey();
+
+            Route::post('bulk-assign-countries', [
+                'as' => 'bulk-assign-countries',
+                'uses' => 'ProductCountryController@bulkAssign',
+                'permission' => 'product.country.assign',
+            ]);
+        });
     });
 });
