@@ -15,6 +15,8 @@ class Country extends BaseModel
         'name',
         'nationality',
         'code',
+        'phone_code',
+        'iso_code',
         'order',
         'is_default',
         'status',
@@ -26,6 +28,8 @@ class Country extends BaseModel
         'name' => SafeContent::class,
         'nationality' => SafeContent::class,
         'code' => SafeContent::class,
+        'phone_code' => SafeContent::class,
+        'iso_code' => SafeContent::class,
         'is_default' => 'bool',
         'order' => 'int',
     ];
@@ -46,5 +50,20 @@ class Country extends BaseModel
     public function cities(): HasMany
     {
         return $this->hasMany(City::class);
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(\Botble\Ecommerce\Models\ProductCountry::class);
+    }
+
+    public function stores(): HasMany
+    {
+        return $this->hasMany(\Botble\Marketplace\Models\StoreShippingCountry::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'published');
     }
 }
