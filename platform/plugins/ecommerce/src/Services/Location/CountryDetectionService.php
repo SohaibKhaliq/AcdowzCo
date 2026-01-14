@@ -8,6 +8,7 @@ use Botble\Location\Models\Country;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
 
 class CountryDetectionService
 {
@@ -47,18 +48,45 @@ class CountryDetectionService
     protected function detectFromIp(): ?int
     {
         try {
-            if (function_exists('\geoip_country_code_by_name')) {
+            // Prefer forwarded IP when behind proxies
+            $ipHeader = request()->header('X-Forwarded-For') ?: request()->server('HTTP_X_FORWARDED_FOR');
+            if ($ipHeader) {
+                $ips = explode(',', $ipHeader);
+                $ip = trim($ips[0]);
+            } else {
                 $ip = request()->ip();
+            }
+
+            // Ignore local or invalid addresses
+            if (in_array($ip, ['127.0.0.1', '::1'], true) || !filter_var($ip, FILTER_VALIDATE_IP)) {
+                return null;
+            }
+
+            $isoCode = null;
+
+            // Use native geoip function when available
+            if (function_exists('\geoip_country_code_by_name')) {
                 $isoCode = @\geoip_country_code_by_name($ip);
-                
-                if ($isoCode) {
-                    $country = Country::query()
-                        ->where('iso_code', $isoCode)
-                        ->where('status', 'published')
-                        ->first();
-                    
-                    return $country?->id;
+            }
+
+            // Fallback to public API if needed and allowed by env
+            if (!$isoCode && env('GEOIP_ENABLED', true)) {
+                $timeout = (int) env('GEOIP_FALLBACK_TIMEOUT', 3);
+                $response = Http::timeout($timeout)->get("https://ipapi.co/{$ip}/json/");
+
+                if ($response->ok()) {
+                    $json = $response->json();
+                    $isoCode = $json['country'] ?? ($json['country_code'] ?? null);
                 }
+            }
+
+            if ($isoCode) {
+                $country = Country::query()
+                    ->where('iso_code', $isoCode)
+                    ->where('status', 'published')
+                    ->first();
+
+                return $country?->id;
             }
         } catch (\Exception $e) {
             // Silent fail
@@ -70,25 +98,25 @@ class CountryDetectionService
     public function detectFromPhone(string $phone): ?int
     {
         $phone = preg_replace('/[^0-9+]/', '', $phone);
-        
+
         if (str_starts_with($phone, '+')) {
             $phoneCode = substr($phone, 1, 3);
-            
+
             $country = Country::query()
                 ->where('phone_code', 'like', $phoneCode . '%')
                 ->where('status', 'published')
                 ->first();
-            
+
             if ($country) {
                 return $country->id;
             }
-            
+
             $phoneCode = substr($phone, 1, 2);
             $country = Country::query()
                 ->where('phone_code', $phoneCode)
                 ->where('status', 'published')
                 ->first();
-            
+
             return $country?->id;
         }
 
