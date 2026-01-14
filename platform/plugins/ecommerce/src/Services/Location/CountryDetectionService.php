@@ -47,9 +47,9 @@ class CountryDetectionService
     protected function detectFromIp(): ?int
     {
         try {
-            if (function_exists('geoip_country_code_by_name')) {
+            if (function_exists('\geoip_country_code_by_name')) {
                 $ip = request()->ip();
-                $isoCode = @geoip_country_code_by_name($ip);
+                $isoCode = @\geoip_country_code_by_name($ip);
                 
                 if ($isoCode) {
                     $country = Country::query()
