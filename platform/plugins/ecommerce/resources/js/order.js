@@ -20,6 +20,29 @@ class OrderAdminManagement {
                 })
         })
 
+        $(document).on('click', '#btn-save-tracking-id', (event) => {
+            event.preventDefault()
+
+            const _self = $(event.currentTarget)
+            const orderId = window.location.pathname.split('/').pop()
+            const trackingId = $('input[name="tracking_id"]').val()
+
+            $httpClient
+                .make()
+                .withButtonLoading(_self)
+                .post(`/admin/ecommerce/orders/${orderId}/tracking-id`, {
+                    tracking_id: trackingId,
+                })
+                .then(({ data }) => {
+                    if (!data.error) {
+                        $('#main-order-content').load(`${window.location.href} #main-order-content > *`)
+                        Botble.showSuccess(data.message)
+                    } else {
+                        Botble.showError(data.message)
+                    }
+                })
+        })
+
         $(document).on('click', '.btn-trigger-resend-order-confirmation-modal', (event) => {
             event.preventDefault()
             $('#confirm-resend-confirmation-email-button').data('action', $(event.currentTarget).data('action'))
