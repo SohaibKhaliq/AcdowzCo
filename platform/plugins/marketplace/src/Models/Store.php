@@ -262,6 +262,27 @@ class Store extends BaseModel
         return $subscription && $subscription->plan && $subscription->plan->verified_eligible;
     }
 
+    public function shippingCountries(): BelongsToMany
+    {
+        return $this->belongsToMany(\Botble\Location\Models\Country::class, 'mp_store_shipping_countries', 'store_id', 'country_id')
+            ->withPivot('is_active')
+            ->withTimestamps();
+    }
+
+    public function activeShippingCountries(): BelongsToMany
+    {
+        return $this->shippingCountries()->wherePivot('is_active', true);
+    }
+
+    public function canShipToCountry($countryId): bool
+    {
+        if (!$countryId) {
+            return true;
+        }
+
+        return $this->activeShippingCountries()->where('countries.id', $countryId)->exists();
+    }
+
     public function newEloquentBuilder($query): StoreQueryBuilder
     {
         return new StoreQueryBuilder($query);
