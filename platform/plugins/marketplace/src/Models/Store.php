@@ -20,6 +20,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -136,7 +137,7 @@ class Store extends BaseModel
         }
 
         try {
-            return (new Avatar())->create($this->name)->toBase64();
+            return (new Avatar())->create((string)$this->name)->toBase64();
         } catch (Exception) {
             return RvMedia::getDefaultImage();
         }
