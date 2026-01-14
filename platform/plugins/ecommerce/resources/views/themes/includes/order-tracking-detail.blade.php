@@ -43,6 +43,20 @@
                                             <span class="value text-warning fst-italic">{{ $order->description }}</span>
                                         </div>
                                     @endif
+                                    @if ($order->hasTrackingId())
+                                        <div class="bb-order-info-item">
+                                            <span class="label">{{ __('Tracking ID') }}:</span>
+                                            <span class="value fw-bold text-success">{{ $order->getTrackingId() }}</span>
+                                        </div>
+                                        @if ($order->shipment && $order->shipment->tracking_link)
+                                            <div class="bb-order-info-item">
+                                                <a href="{{ $order->shipment->tracking_link }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    <x-core::icon name="ti ti-external-link" />
+                                                    {{ trans('plugins/ecommerce::order.track_shipment') }}
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endif
                                 </div>
                             </div>
                         </div>
