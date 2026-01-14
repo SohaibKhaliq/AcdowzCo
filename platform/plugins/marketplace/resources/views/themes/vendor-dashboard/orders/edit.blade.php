@@ -109,6 +109,50 @@
                     @endif
                 </x-core::card>
 
+                <x-core::card class="mb-3">
+                    <x-core::card.header>
+                        <x-core::card.title>
+                            <x-core::icon name="ti ti-truck-delivery" />
+                            {{ trans('plugins/ecommerce::order.tracking_information') }}
+                        </x-core::card.title>
+                    </x-core::card.header>
+                    <x-core::card.body>
+                        <form id="vendor-tracking-id-form" class="d-flex align-items-center gap-2">
+                            @csrf
+                            <div class="flex-grow-1">
+                                <x-core::form.text-input
+                                    :name="'tracking_id'"
+                                    :label="trans('plugins/ecommerce::order.tracking_id')"
+                                    :value="$order->tracking_id ?: $order->shipment?->tracking_id"
+                                    :placeholder="trans('plugins/ecommerce::order.tracking_id_placeholder')"
+                                />
+                            </div>
+                            <div class="mt-4">
+                                <x-core::button
+                                    type="button"
+                                    id="btn-vendor-save-tracking-id"
+                                    color="primary"
+                                    icon="ti ti-device-floppy"
+                                >
+                                    {{ trans('core/base::forms.save') }}
+                                </x-core::button>
+                            </div>
+                        </form>
+                        
+                        @if($order->tracking_id || $order->shipment?->tracking_id)
+                            <div class="mt-3 p-3 bg-light rounded">
+                                <div class="d-flex align-items-center gap-2">
+                                    <x-core::icon name="ti ti-circle-check" class="text-success" />
+                                    <span class="text-muted">
+                                        {{ trans('plugins/ecommerce::order.current_tracking_id') }}: 
+                                        <strong>{{ $order->tracking_id ?: $order->shipment?->tracking_id }}</strong>
+                                    </span>
+                                </div>
+                            </div>
+                        @endif
+                    </x-core::card.body>
+                </x-core::card>
+
                 <x-core::card>
                     <x-core::card.header>
                         <x-core::card.title>
@@ -455,6 +499,33 @@
     @include('plugins/ecommerce::orders.edit.modal', [
         'updateShippingAddressRoute' => 'marketplace.vendor.orders.update-shipping-address',
     ])
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '#btn-vendor-save-tracking-id', function(event) {
+                event.preventDefault();
+
+                const _self = $(this);
+                const orderId = {{ $order->id }};
+                const trackingId = $('input[name="tracking_id"]').val();
+
+                $httpClient
+                    .make()
+                    .withButtonLoading(_self)
+                    .post(`/vendor/orders/${orderId}/tracking-id`, {
+                        tracking_id: trackingId,
+                    })
+                    .then(({ data }) => {
+                        if (!data.error) {
+                            $('#main-order-content').load(`${window.location.href} #main-order-content > *`);
+                            Botble.showSuccess(data.message);
+                        } else {
+                            Botble.showError(data.message);
+                        }
+                    });
+            });
+        });
+    </script>
 
     @if (! EcommerceHelper::isDisabledPhysicalProduct() && $order->shipment && $order->shipment->id)
         <x-core::modal
