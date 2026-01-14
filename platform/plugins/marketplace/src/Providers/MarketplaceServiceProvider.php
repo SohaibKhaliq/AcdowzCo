@@ -99,6 +99,13 @@ class MarketplaceServiceProvider extends ServiceProvider
             ->publishAssets()
             ->loadRoutes(['base', 'fronts', 'vendor']);
 
+        // Register console commands
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Botble\Marketplace\Console\ExpireSubscriptionsCommand::class,
+            ]);
+        }
+
         if (defined('LANGUAGE_MODULE_SCREEN_NAME') && defined('LANGUAGE_ADVANCED_MODULE_SCREEN_NAME')) {
             LanguageAdvancedManager::registerModule(Store::class, [
                 'name',
@@ -189,6 +196,24 @@ class MarketplaceServiceProvider extends ServiceProvider
                     'icon' => 'ti ti-eye',
                     'url' => fn() => route('marketplace.product-oversight.index'),
                     'permissions' => ['products.index'],
+                ])
+                ->registerItem([
+                    'id' => 'cms-plugins-marketplace-subscription-plans',
+                    'priority' => 8,
+                    'parent_id' => 'cms-plugins-marketplace',
+                    'name' => 'plugins/marketplace::subscription.plans.name',
+                    'icon' => 'ti ti-tags',
+                    'url' => fn() => route('marketplace.subscription-plans.index'),
+                    'permissions' => ['marketplace.subscription-plans.index'],
+                ])
+                ->registerItem([
+                    'id' => 'cms-plugins-marketplace-vendor-subscriptions',
+                    'priority' => 9,
+                    'parent_id' => 'cms-plugins-marketplace',
+                    'name' => 'plugins/marketplace::subscription.subscriptions.name',
+                    'icon' => 'ti ti-ticket',
+                    'url' => fn() => route('marketplace.vendor-subscriptions.index'),
+                    'permissions' => ['marketplace.vendor-subscriptions.index'],
                 ])
                 ->when(
                     MarketplaceHelper::isEnabledMessagingSystem(),
