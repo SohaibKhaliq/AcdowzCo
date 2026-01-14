@@ -136,6 +136,40 @@ class Customer extends BaseModel implements
         return $this->resellerOrders()->where('status', 'approved');
     }
 
+    public function resellerWallet(): HasOne
+    {
+        return $this->hasOne(ResellerWallet::class, 'reseller_id');
+    }
+
+    public function resellerPenalties(): HasMany
+    {
+        return $this->hasMany(ResellerPenalty::class, 'reseller_id');
+    }
+
+    public function getOrCreateWallet(): ResellerWallet
+    {
+        return $this->resellerWallet()->firstOrCreate(
+            ['reseller_id' => $this->id],
+            ['balance' => 0, 'is_blocked' => false]
+        );
+    }
+
+    public function hasNegativeBalance(): bool
+    {
+        $wallet = $this->resellerWallet;
+        return $wallet && $wallet->balance < 0;
+    }
+
+    public function canGenerateLinks(): bool
+    {
+        if (!$this->is_reseller_active) {
+            return false;
+        }
+
+        $wallet = $this->resellerWallet;
+        return !$wallet || !$wallet->is_blocked;
+    }
+
     public function generateResellerLink(int $productId = null): string
     {
         $baseUrl = url('/');
