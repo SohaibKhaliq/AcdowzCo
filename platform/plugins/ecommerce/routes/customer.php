@@ -308,6 +308,16 @@ Theme::registerRoutes(function (): void {
                     'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@generateLink',
                 ]);
             });
+
+            Route::post('country/set', [
+                'as' => 'country.set',
+                'uses' => 'Fronts\CountryController@setCountry',
+            ]);
+
+            Route::get('country/detect', [
+                'as' => 'country.detect',
+                'uses' => 'Fronts\CountryController@detect',
+            ]);
         });
 
     Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers\Customers', 'as' => 'public.'], function (): void {
