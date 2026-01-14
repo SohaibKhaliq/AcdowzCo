@@ -190,6 +190,52 @@
 
                 @include('plugins/ecommerce::orders.partials.digital-product-downloads-info', compact('order'))
 
+                @if (Auth::user()->hasPermission('orders.edit'))
+                    <x-core::card class="mb-3">
+                        <x-core::card.header>
+                            <x-core::card.title>
+                                <x-core::icon name="ti ti-truck-delivery" />
+                                {{ trans('plugins/ecommerce::order.tracking_information') }}
+                            </x-core::card.title>
+                        </x-core::card.header>
+                        <x-core::card.body>
+                            <form id="tracking-id-form" class="d-flex align-items-center gap-2">
+                                @csrf
+                                <div class="flex-grow-1">
+                                    <x-core::form.text-input
+                                        :name="'tracking_id'"
+                                        :label="trans('plugins/ecommerce::order.tracking_id')"
+                                        :value="$order->tracking_id ?: $order->shipment?->tracking_id"
+                                        :placeholder="trans('plugins/ecommerce::order.tracking_id_placeholder')"
+                                    />
+                                </div>
+                                <div class="mt-4">
+                                    <x-core::button
+                                        type="button"
+                                        id="btn-save-tracking-id"
+                                        color="primary"
+                                        icon="ti ti-device-floppy"
+                                    >
+                                        {{ trans('core/base::forms.save') }}
+                                    </x-core::button>
+                                </div>
+                            </form>
+                            
+                            @if($order->tracking_id || $order->shipment?->tracking_id)
+                                <div class="mt-3 p-3 bg-light rounded">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <x-core::icon name="ti ti-circle-check" class="text-success" />
+                                        <span class="text-muted">
+                                            {{ trans('plugins/ecommerce::order.current_tracking_id') }}: 
+                                            <strong>{{ $order->tracking_id ?: $order->shipment?->tracking_id }}</strong>
+                                        </span>
+                                    </div>
+                                </div>
+                            @endif
+                        </x-core::card.body>
+                    </x-core::card>
+                @endif
+
                 @if ($order->histories()->exists())
                     <x-core::card>
                     <x-core::card.header>
