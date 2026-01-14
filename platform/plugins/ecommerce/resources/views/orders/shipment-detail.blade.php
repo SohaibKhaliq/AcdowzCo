@@ -58,6 +58,22 @@
             </x-core::datagrid.item>
         @endif
 
+        @if ($shipment->tracking_id || $order->tracking_id)
+            <x-core::datagrid.item>
+                <x-slot:title>
+                    {{ trans('plugins/ecommerce::order.tracking_id') }}
+                </x-slot:title>
+                <strong>{{ $shipment->tracking_id ?: $order->tracking_id }}</strong>
+                @if ($shipment->tracking_link)
+                    <br>
+                    <a href="{{ $shipment->tracking_link }}" target="_blank" class="text-primary">
+                        <x-core::icon name="ti ti-external-link" />
+                        {{ trans('plugins/ecommerce::order.track_shipment') }}
+                    </a>
+                @endif
+            </x-core::datagrid.item>
+        @endif
+
         @if ($shipment->customer_delivered_confirmed_at)
             <x-core::datagrid.item>
                 <x-slot:title>
