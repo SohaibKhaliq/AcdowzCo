@@ -48,6 +48,9 @@ class Order extends BaseModel
         'completed_at',
         'proof_file',
         'private_notes',
+        'tracking_id',
+        'payment_method',
+        'payment_status',
     ];
 
     protected $casts = [
@@ -362,5 +365,25 @@ class Order extends BaseModel
                 'variationProductAttributes',
             ],
         ]);
+    }
+
+    public function isCOD(): bool
+    {
+        return $this->payment_method === 'cod' || $this->payment_method === PaymentMethodEnum::COD;
+    }
+
+    public function isAdvancePaid(): bool
+    {
+        return $this->payment_status === 'paid' && ! $this->isCOD();
+    }
+
+    public function hasTrackingId(): bool
+    {
+        return ! empty($this->tracking_id) || ($this->shipment && ! empty($this->shipment->tracking_id));
+    }
+
+    public function getTrackingId(): ?string
+    {
+        return $this->tracking_id ?: $this->shipment?->tracking_id;
     }
 }
