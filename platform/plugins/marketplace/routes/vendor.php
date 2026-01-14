@@ -308,4 +308,21 @@ Route::group([
 
     Route::get('settings/languages', [LanguageSettingController::class, 'index'])->name('language-settings.index');
     Route::put('settings/languages', [LanguageSettingController::class, 'update'])->name('language-settings.update');
+
+    Route::group(['prefix' => 'subscriptions', 'as' => 'subscriptions.'], function (): void {
+        Route::get('/', [
+            'as' => 'index',
+            'uses' => 'Botble\Marketplace\Http\Controllers\Vendor\SubscriptionController@index',
+        ]);
+
+        Route::post('subscribe', [
+            'as' => 'subscribe',
+            'uses' => 'Botble\Marketplace\Http\Controllers\Vendor\SubscriptionController@subscribe',
+        ]);
+
+        Route::post('renew/{id}', [
+            'as' => 'renew',
+            'uses' => 'Botble\Marketplace\Http\Controllers\Vendor\SubscriptionController@renew',
+        ])->wherePrimaryKey();
+    });
 });
