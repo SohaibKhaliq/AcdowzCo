@@ -117,6 +117,12 @@ AdminHelper::registerRoutes(function (): void {
                 'uses' => 'OrderController@downloadProof',
                 'permission' => 'orders.edit',
             ])->wherePrimaryKey('order');
+
+            Route::post('orders/{order}/tracking-id', [
+                'as' => 'update-tracking-id',
+                'uses' => 'OrderTrackingController@updateTrackingId',
+                'permission' => 'orders.edit',
+            ])->wherePrimaryKey('order');
         });
 
         Route::group(['prefix' => 'incomplete-orders', 'as' => 'orders.'], function (): void {
