@@ -21,9 +21,7 @@ use Illuminate\Support\Str;
 
 class SaveVendorInformationListener
 {
-    public function __construct(protected Request $request)
-    {
-    }
+    public function __construct(protected Request $request) {}
 
     public function handle(Registered $event): void
     {
@@ -42,17 +40,34 @@ class SaveVendorInformationListener
             ->first();
 
         if (! $store) {
+            $agreementType = $this->request->input('agreement_type', 'commission');
+            $defaultCommissionRate = MarketplaceHelper::getSetting('default_commission_rate', 5);
+
             $store = Store::query()->create([
                 'name' => BaseHelper::clean($this->request->input('shop_name')),
                 'phone' => BaseHelper::clean($this->request->input('shop_phone')),
                 'email' => BaseHelper::clean($this->request->input('email')),
                 'customer_id' => $customer->getAuthIdentifier(),
-                'agreement_type' => $this->request->input('agreement_type', 'commission'),
-                'agreement_value' => $this->request->input('agreement_type') === 'commission' 
-                    ? MarketplaceHelper::getSetting('default_commission_rate', 5) 
-                    : 0,
+                'agreement_type' => $agreementType,
+                'agreement_value' => $agreementType === 'commission' ? $defaultCommissionRate : 0,
+                'commission_rate' => $agreementType === 'commission' ? $defaultCommissionRate : 0,
                 'agreement_notes' => BaseHelper::clean($this->request->input('agreement_notes')),
+                'agreement_accepted_at' => now(), // Vendor accepted by registering
+                'agreement_history' => [[
+                    'changed_at' => now()->toISOString(),
+                    'changed_by' => null,
+                    'old_values' => [],
+                    'new_values' => [
+                        'type' => $agreementType,
+                        'value' => $agreementType === 'commission' ? $defaultCommissionRate : 0,
+                        'commission_rate' => $agreementType === 'commission' ? $defaultCommissionRate : 0,
+                        'notes' => $this->request->input('agreement_notes'),
+                    ],
+                ]],
             ]);
+
+            // Mark agreement as accepted when vendor registers
+            $store->agreement_accepted_at = now();
         }
 
         if (! $store->slug) {
