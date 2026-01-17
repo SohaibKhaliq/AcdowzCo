@@ -199,6 +199,23 @@ Route::group([
         ])->wherePrimaryKey();
     });
 
+    Route::group(['prefix' => 'warnings', 'as' => 'warnings.'], function (): void {
+        Route::get('/', [
+            'as' => 'index',
+            'uses' => 'VendorWarningController@index',
+        ]);
+
+        Route::get('{id}', [
+            'as' => 'show',
+            'uses' => 'VendorWarningController@show',
+        ])->wherePrimaryKey();
+
+        Route::post('acknowledge/{id}', [
+            'as' => 'acknowledge',
+            'uses' => 'VendorWarningController@acknowledge',
+        ])->wherePrimaryKey();
+    });
+
     Route::group(['prefix' => 'orders', 'as' => 'orders.'], function (): void {
         Route::resource('', 'OrderController')->parameters(['' => 'order'])->except(['create', 'store']);
 
