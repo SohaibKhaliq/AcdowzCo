@@ -22,4 +22,12 @@ return [
         'blocked' => 'Your wallet is blocked due to negative balance',
         'repay_required' => 'Please repay your balance to continue',
     ],
+    'reseller-application' => [
+        'name' => 'Reseller Applications',
+        'statuses' => [
+            'pending' => 'Pending',
+            'approved' => 'Approved',
+            'rejected' => 'Rejected',
+        ],
+    ],
 ];
