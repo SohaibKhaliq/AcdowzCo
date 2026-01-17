@@ -14,7 +14,7 @@
                     <div class="col-md-3">
                         <select name="vendor_id" class="form-select">
                             <option value="">{{ trans('All Vendors') }}</option>
-                            @foreach($stores as $id => $name)
+                            @foreach ($stores as $id => $name)
                                 <option value="{{ $id }}" {{ request('vendor_id') == $id ? 'selected' : '' }}>
                                     {{ $name }}
                                 </option>
@@ -24,7 +24,8 @@
                     <div class="col-md-3">
                         <select name="status" class="form-select">
                             <option value="">{{ trans('All Statuses') }}</option>
-                            <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>Published</option>
+                            <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>Published
+                            </option>
                             <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
                             <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                         </select>
@@ -32,8 +33,10 @@
                     <div class="col-md-3">
                         <select name="approved_status" class="form-select">
                             <option value="">{{ trans('All Approvals') }}</option>
-                            <option value="pending" {{ request('approved_status') == 'pending' ? 'selected' : '' }}>Pending Approval</option>
-                            <option value="approved" {{ request('approved_status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                            <option value="pending" {{ request('approved_status') == 'pending' ? 'selected' : '' }}>Pending
+                                Approval</option>
+                            <option value="approved" {{ request('approved_status') == 'approved' ? 'selected' : '' }}>
+                                Approved</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -79,7 +82,7 @@
                                 </x-core::badge>
                             </x-core::table.body.cell>
                             <x-core::table.body.cell>
-                                @if($product->approved_by)
+                                @if ($product->approved_by)
                                     <x-core::icon name="ti ti-check" class="text-success" />
                                     {{ trans('Approved') }}
                                 @else
@@ -87,46 +90,30 @@
                                 @endif
                             </x-core::table.body.cell>
                             <x-core::table.body.cell>
-                                @if($product->store)
+                                @if ($product->store)
                                     <small>{{ ucfirst($product->store->agreement_type ?? 'N/A') }}</small>
-                                    <br/>
-                                    <small class="text-muted">{{ $product->store->agreement_value ?? 0 }}{{ $product->store->agreement_type == 'commission' ? '%' : '' }}</small>
+                                    <br />
+                                    <small
+                                        class="text-muted">{{ $product->store->agreement_value ?? 0 }}{{ $product->store->agreement_type == 'commission' ? '%' : '' }}</small>
                                 @else
                                     N/A
                                 @endif
                             </x-core::table.body.cell>
                             <x-core::table.body.cell>
                                 <div class="btn-list">
-                                    @if(!$product->approved_by)
-                                        <x-core::button
-                                            tag="button"
-                                            size="sm"
-                                            color="success"
-                                            :outlined="true"
-                                            class="btn-approve-product"
-                                            data-id="{{ $product->id }}"
-                                        >
+                                    @if (!$product->approved_by)
+                                        <x-core::button tag="button" size="sm" color="success" :outlined="true"
+                                            class="btn-approve-product" data-id="{{ $product->id }}">
                                             {{ trans('Approve') }}
                                         </x-core::button>
-                                        <x-core::button
-                                            tag="button"
-                                            size="sm"
-                                            color="warning"
-                                            :outlined="true"
-                                            class="btn-reject-product"
-                                            data-id="{{ $product->id }}"
-                                        >
+                                        <x-core::button tag="button" size="sm" color="warning" :outlined="true"
+                                            class="btn-reject-product" data-id="{{ $product->id }}">
                                             {{ trans('Reject') }}
                                         </x-core::button>
                                     @endif
-                                    <x-core::button
-                                        tag="button"
-                                        size="sm"
-                                        color="danger"
-                                        :outlined="true"
+                                    <x-core::button tag="button" size="sm" color="danger" :outlined="true"
                                         data-bb-toggle="delete-action"
-                                        data-url="{{ route('products.destroy', $product->id) }}"
-                                    >
+                                        data-url="{{ route('products.destroy', $product->id) }}">
                                         {{ trans('Delete') }}
                                     </x-core::button>
                                 </div>
@@ -143,18 +130,13 @@
             </x-core::table>
 
             <div class="mt-3">
-                <x-core::button
-                    tag="button"
-                    color="danger"
-                    id="bulk-delete-btn"
-                    disabled
-                >
+                <x-core::button tag="button" color="danger" id="bulk-delete-btn" disabled>
                     {{ trans('Bulk Delete Selected') }}
                 </x-core::button>
             </div>
         </x-core::card.body>
 
-        @if($products->hasPages())
+        @if ($products->hasPages())
             <x-core::card.footer>
                 {{ $products->links() }}
             </x-core::card.footer>
@@ -163,60 +145,117 @@
 @endsection
 
 @push('footer')
-<script>
-    $(document).ready(function() {
-        // Select all checkbox
-        $('#select-all').on('change', function() {
-            $('.product-checkbox').prop('checked', $(this).is(':checked'));
-            toggleBulkActions();
-        });
+    <script>
+        $(document).ready(function() {
+            console.log('Product Oversight JS initialized');
 
-        $('.product-checkbox').on('change', toggleBulkActions);
+            // Select all checkbox
+            $('#select-all').on('change', function() {
+                $('.product-checkbox').prop('checked', $(this).is(':checked'));
+                toggleBulkActions();
+            });
 
-        function toggleBulkActions() {
-            const checked = $('.product-checkbox:checked').length;
-            $('#bulk-delete-btn').prop('disabled', checked === 0);
-        }
+            $('.product-checkbox').on('change', toggleBulkActions);
 
-        // Approve product
-        $('.btn-approve-product').on('click', function() {
-            const id = $(this).data('id');
-            if (confirm('{{ trans("Are you sure you want to approve this product?") }}')) {
-                $.post('{{ route("marketplace.product-oversight.approve", ":id") }}'.replace(':id', id), {
-                    _token: '{{ csrf_token() }}'
-                }).done(function() {
-                    window.location.reload();
-                });
+            function toggleBulkActions() {
+                const checked = $('.product-checkbox:checked').length;
+                $('#bulk-delete-btn').prop('disabled', checked === 0);
             }
-        });
 
-        // Reject product
-        $('.btn-reject-product').on('click', function() {
-            const id = $(this).data('id');
-            if (confirm('{{ trans("Are you sure you want to reject this product?") }}')) {
-                $.post('{{ route("marketplace.product-oversight.reject", ":id") }}'.replace(':id', id), {
-                    _token: '{{ csrf_token() }}'
-                }).done(function() {
-                    window.location.reload();
-                });
-            }
-        });
+            // Approve product
+            $(document).on('click', '.btn-approve-product', function(e) {
+                e.preventDefault();
+                const id = $(this).data('id');
+                const button = $(this);
 
-        // Bulk delete
-        $('#bulk-delete-btn').on('click', function() {
-            const ids = $('.product-checkbox:checked').map(function() {
-                return $(this).val();
-            }).get();
+                if (confirm('{{ trans('Are you sure you want to approve this product?') }}')) {
+                    button.prop('disabled', true);
+                    $.ajax({
+                        url: '{{ route('marketplace.product-oversight.approve', ':id') }}'.replace(
+                            ':id', id),
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            Botble.showSuccess(response.message ||
+                                '{{ trans('Product approved successfully') }}');
+                            window.location.reload();
+                        },
+                        error: function(xhr) {
+                            button.prop('disabled', false);
+                            Botble.showError(xhr.responseJSON?.message ||
+                                '{{ trans('An error occurred') }}');
+                        }
+                    });
+                }
+            });
 
-            if (confirm('{{ trans("Are you sure you want to delete selected products?") }}')) {
-                $.post('{{ route("marketplace.product-oversight.bulk-delete") }}', {
-                    _token: '{{ csrf_token() }}',
-                    ids: ids
-                }).done(function() {
-                    window.location.reload();
-                });
-            }
+            // Reject product
+            $(document).on('click', '.btn-reject-product', function(e) {
+                e.preventDefault();
+                const id = $(this).data('id');
+                const button = $(this);
+
+                if (confirm('{{ trans('Are you sure you want to reject this product?') }}')) {
+                    button.prop('disabled', true);
+                    $.ajax({
+                        url: '{{ route('marketplace.product-oversight.reject', ':id') }}'.replace(
+                            ':id', id),
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            Botble.showSuccess(response.message ||
+                                '{{ trans('Product rejected successfully') }}');
+                            window.location.reload();
+                        },
+                        error: function(xhr) {
+                            button.prop('disabled', false);
+                            Botble.showError(xhr.responseJSON?.message ||
+                                '{{ trans('An error occurred') }}');
+                        }
+                    });
+                }
+            });
+
+            // Bulk delete
+            $('#bulk-delete-btn').on('click', function(e) {
+                e.preventDefault();
+                const ids = $('.product-checkbox:checked').map(function() {
+                    return $(this).val();
+                }).get();
+
+                if (ids.length === 0) {
+                    Botble.showError('{{ trans('Please select at least one product') }}');
+                    return;
+                }
+
+                if (confirm('{{ trans('Are you sure you want to delete selected products?') }}')) {
+                    const button = $(this);
+                    button.prop('disabled', true);
+
+                    $.ajax({
+                        url: '{{ route('marketplace.product-oversight.bulk-delete') }}',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            ids: ids
+                        },
+                        success: function(response) {
+                            Botble.showSuccess(response.message ||
+                                '{{ trans('Products deleted successfully') }}');
+                            window.location.reload();
+                        },
+                        error: function(xhr) {
+                            button.prop('disabled', false);
+                            Botble.showError(xhr.responseJSON?.message ||
+                                '{{ trans('An error occurred') }}');
+                        }
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush
