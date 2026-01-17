@@ -302,6 +302,11 @@ Theme::registerRoutes(function (): void {
                     'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@toggleStatus',
                 ]);
 
+                Route::post('request-delete', [
+                    'as' => 'request-delete',
+                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@requestDelete',
+                ]);
+
                 Route::get('analytics', [
                     'as' => 'analytics',
                     'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@analytics',
