@@ -43,14 +43,18 @@ class ResellerApplicationController extends BaseController
 
         $resellerApplication->save();
 
-        if ($status == ResellerApplicationStatusEnum::APPROVED && $oldStatus != ResellerApplicationStatusEnum::APPROVED) {
+        if ($status == ResellerApplicationStatusEnum::APPROVED && (string)$oldStatus != ResellerApplicationStatusEnum::APPROVED) {
             $customer = $resellerApplication->customer;
-            $customer->is_reseller_active = true;
-            $customer->save();
-        } elseif ($status != ResellerApplicationStatusEnum::APPROVED && $oldStatus == ResellerApplicationStatusEnum::APPROVED) {
+            if ($customer && $customer->id) {
+                $customer->is_reseller_active = true;
+                $customer->save();
+            }
+        } elseif ($status != ResellerApplicationStatusEnum::APPROVED && (string)$oldStatus == ResellerApplicationStatusEnum::APPROVED) {
             $customer = $resellerApplication->customer;
-            $customer->is_reseller_active = false;
-            $customer->save();
+            if ($customer && $customer->id) {
+                $customer->is_reseller_active = false;
+                $customer->save();
+            }
         }
 
         event(new UpdatedContentEvent(RESELLER_APPLICATION_MODULE_SCREEN_NAME, $request, $resellerApplication));
