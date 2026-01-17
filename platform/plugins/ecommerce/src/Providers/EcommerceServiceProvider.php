@@ -401,6 +401,7 @@ class EcommerceServiceProvider extends ServiceProvider
                 'product-specification',
                 'api',
                 'ajax',
+                'otp',
             ])
             ->loadAndPublishConfigurations([
                 'general',
@@ -958,6 +959,17 @@ class EcommerceServiceProvider extends ServiceProvider
                         'name' => 'plugins/ecommerce::reseller.penalties.name',
                         'icon' => 'ti ti-alert-circle',
                         'url' => fn() => route(Route::has('reseller-penalties.index') ? 'reseller-penalties.index' : 'ecommerce.reseller-penalties.index'),
+                        'permissions' => ['customers.index'],
+                    ]);
+                })
+                ->when(Route::has('ecommerce.reseller-applications.index'), function (DashboardMenuSupport $dashboardMenu): void {
+                    $dashboardMenu->registerItem([
+                        'id' => 'cms-plugins-ecommerce-reseller-applications',
+                        'priority' => 202,
+                        'parent_id' => 'cms-plugins-ecommerce',
+                        'name' => 'Reseller Applications',
+                        'icon' => 'ti ti-file-text',
+                        'url' => fn() => route('ecommerce.reseller-applications.index'),
                         'permissions' => ['customers.index'],
                     ]);
                 })
