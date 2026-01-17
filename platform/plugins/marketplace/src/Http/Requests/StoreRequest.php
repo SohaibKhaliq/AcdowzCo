@@ -33,6 +33,9 @@ class StoreRequest extends Request
             'logo' => ['nullable', 'string', new MediaImageRule()],
             'logo_square' => ['nullable', 'string', new MediaImageRule()],
             'cover_image' => ['nullable', 'string', new MediaImageRule()],
+            'agreement_type' => ['required', 'string', 'in:commission,flat_fee'],
+            'agreement_value' => ['required', 'numeric', 'min:0'],
+            'agreement_notes' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }
