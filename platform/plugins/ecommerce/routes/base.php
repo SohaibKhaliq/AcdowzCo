@@ -357,6 +357,10 @@ AdminHelper::registerRoutes(function (): void {
             ]);
         });
 
+        Route::group(['prefix' => 'reseller-applications', 'as' => 'reseller-applications.'], function (): void {
+            Route::resource('', 'Admin\ResellerApplicationController')->parameters(['' => 'reseller_application'])->except(['create', 'store', 'destroy']);
+        });
+
         Route::group(['prefix' => 'products', 'as' => 'products.'], function (): void {
             Route::get('{id}/countries', [
                 'as' => 'countries.index',
