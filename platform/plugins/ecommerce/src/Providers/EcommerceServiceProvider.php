@@ -940,11 +940,29 @@ class EcommerceServiceProvider extends ServiceProvider
                     'url' => fn() => route('customers.index'),
                     'permissions' => ['customers.index'],
                 ])
+                ->registerItem([
+                    'id' => 'cms-plugins-resellers',
+                    'priority' => 10, // High priority to be visible
+                    'parent_id' => 'cms-plugins-ecommerce',
+                    'name' => 'Resellers',
+                    'icon' => 'ti ti-briefcase',
+                    'url' => '#',
+                    'permissions' => ['customers.index'],
+                ])
+                ->registerItem([
+                    'id' => 'cms-plugins-resellers-list',
+                    'priority' => 10,
+                    'parent_id' => 'cms-plugins-resellers',
+                    'name' => 'Reseller List',
+                    'icon' => 'ti ti-users',
+                    'url' => fn() => route('customers.index', ['is_reseller_active' => 1]),
+                    'permissions' => ['customers.index'],
+                ])
                 ->when(Route::has('reseller-commissions.index') || Route::has('ecommerce.reseller-commissions.index'), function (DashboardMenuSupport $dashboardMenu): void {
                     $dashboardMenu->registerItem([
                         'id' => 'cms-plugins-ecommerce-reseller-commissions',
-                        'priority' => 200,
-                        'parent_id' => 'cms-plugins-ecommerce',
+                        'priority' => 20,
+                        'parent_id' => 'cms-plugins-resellers',
                         'name' => 'plugins/ecommerce::ecommerce.reseller-commissions',
                         'icon' => 'ti ti-percentage',
                         'url' => fn() => route(Route::has('reseller-commissions.index') ? 'reseller-commissions.index' : 'ecommerce.reseller-commissions.index'),
@@ -954,8 +972,8 @@ class EcommerceServiceProvider extends ServiceProvider
                 ->when(Route::has('reseller-penalties.index') || Route::has('ecommerce.reseller-penalties.index'), function (DashboardMenuSupport $dashboardMenu): void {
                     $dashboardMenu->registerItem([
                         'id' => 'cms-plugins-ecommerce-reseller-penalties',
-                        'priority' => 201,
-                        'parent_id' => 'cms-plugins-ecommerce',
+                        'priority' => 30,
+                        'parent_id' => 'cms-plugins-resellers',
                         'name' => 'plugins/ecommerce::reseller.penalties.name',
                         'icon' => 'ti ti-alert-circle',
                         'url' => fn() => route(Route::has('reseller-penalties.index') ? 'reseller-penalties.index' : 'ecommerce.reseller-penalties.index'),
@@ -965,8 +983,8 @@ class EcommerceServiceProvider extends ServiceProvider
                 ->when(Route::has('ecommerce.reseller-applications.index'), function (DashboardMenuSupport $dashboardMenu): void {
                     $dashboardMenu->registerItem([
                         'id' => 'cms-plugins-ecommerce-reseller-applications',
-                        'priority' => 202,
-                        'parent_id' => 'cms-plugins-ecommerce',
+                        'priority' => 40,
+                        'parent_id' => 'cms-plugins-resellers',
                         'name' => 'Reseller Applications',
                         'icon' => 'ti ti-file-text',
                         'url' => fn() => route('ecommerce.reseller-applications.index'),
