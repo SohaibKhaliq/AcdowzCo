@@ -170,7 +170,6 @@
     </div>
 </div>
 
-@push('scripts')
 <script>
     function toggleResellerStatus(button) {
         if (!confirm('{{ __("Are you sure?") }}')) return;
@@ -231,4 +230,3 @@
         });
     }
 </script>
-@endpush
