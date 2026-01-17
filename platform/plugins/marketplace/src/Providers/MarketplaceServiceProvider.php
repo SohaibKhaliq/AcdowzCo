@@ -311,6 +311,13 @@ class MarketplaceServiceProvider extends ServiceProvider
                     'icon' => 'ti ti-wallet',
                 ])
                 ->registerItem([
+                    'id' => 'marketplace.vendor.warnings',
+                    'priority' => 7,
+                    'name' => __('Official Warnings'),
+                    'url' => fn() => route('marketplace.vendor.warnings.index'),
+                    'icon' => 'ti ti-alert-triangle',
+                ])
+                ->registerItem([
                     'id' => 'marketplace.vendor.settings',
                     'priority' => 999,
                     'name' => __('Settings'),
