@@ -26,14 +26,14 @@ class ResellerManagementTable extends TableAbstract
                     ->label(__('Disable Reseller'))
                     ->icon('ti ti-user-off')
                     ->color('warning')
-                    ->route('ecommerce.reseller-management.disable')
+                    ->route('reseller-management.disable')
                     ->permission('customers.edit')
                     ->displayIf(fn($item) => $item->is_reseller_active),
                 Action::make('enable')
                     ->label(__('Enable Reseller'))
                     ->icon('ti ti-user-check')
                     ->color('success')
-                    ->route('ecommerce.reseller-management.enable')
+                    ->route('reseller-management.enable')
                     ->permission('customers.edit')
                     ->displayIf(fn($item) => !$item->is_reseller_active),
             ]);
@@ -45,6 +45,7 @@ class ResellerManagementTable extends TableAbstract
             ->getModel()
             ->query()
             ->whereNotNull('reseller_id')
+            ->where('is_vendor', false)
             ->select([
                 'id',
                 'name',
