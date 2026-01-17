@@ -21,6 +21,10 @@ class ResellerController extends BaseController
             return redirect()->route('customer.login');
         }
 
+        if (!$customer->is_reseller_active) {
+            return redirect()->route('customer.reseller.apply');
+        }
+
         $stats = [
             'total_clicks' => ResellerClick::where('reseller_id', $customer->id)->count(),
             'total_orders' => ResellerOrder::where('reseller_id', $customer->id)->count(),
@@ -55,6 +59,57 @@ class ResellerController extends BaseController
             ->render();
     }
 
+    public function apply()
+    {
+        $customer = auth('customer')->user();
+
+        if (!$customer) {
+            return redirect()->route('customer.login');
+        }
+
+        if ($customer->is_reseller_active) {
+            return redirect()->route('customer.reseller.dashboard');
+        }
+
+        $application = $customer->resellerApplications()->latest()->first();
+
+        Theme::breadcrumb()
+            ->add(__('Home'), route('public.index'))
+            ->add(__('Apply for Reseller Program'), route('customer.reseller.apply'));
+
+        return Theme::scope('ecommerce.reseller.apply', compact('customer', 'application'))
+            ->render();
+    }
+
+    public function postApply(Request $request, BaseHttpResponse $response)
+    {
+        $customer = auth('customer')->user();
+
+        if (!$customer) {
+            return redirect()->route('customer.login');
+        }
+
+        if ($customer->is_reseller_active) {
+            return $response->setError()->setMessage(__('You are already a reseller.'));
+        }
+
+        $request->validate([
+            'notes' => 'required|string|max:1000',
+        ]);
+
+        $existingApplication = $customer->resellerApplications()->where('status', 'pending')->first();
+        if ($existingApplication) {
+            return $response->setError()->setMessage(__('You already have a pending application.'));
+        }
+
+        $customer->resellerApplications()->create([
+            'notes' => $request->input('notes'),
+            'status' => 'pending',
+        ]);
+
+        return $response->setMessage(__('Your application has been submitted successfully and is pending approval.'));
+    }
+
     public function toggleStatus(Request $request): BaseHttpResponse
     {
         $customer = auth('customer')->user();
@@ -71,11 +126,28 @@ class ResellerController extends BaseController
 
         return $this
             ->httpResponse()
-            ->setMessage(__('Reseller status updated successfully'))
-            ->setData([
-                'is_active' => $customer->is_reseller_active,
-                'reseller_id' => $customer->reseller_id,
-            ]);
+            ->setMessage(__('Reseller status updated successfully'));
+    }
+
+    public function requestDelete(Request $request): BaseHttpResponse
+    {
+        $customer = auth('customer')->user();
+
+        if (!$customer || !$customer->is_reseller_active) {
+            return $this
+                ->httpResponse()
+                ->setError()
+                ->setMessage(__('Reseller mode is not active'));
+        }
+
+        $customer->reseller_deletion_requested_at = Carbon::now();
+        $customer->save();
+
+        // Send email notification (To be implemented with events/listeners)
+
+        return $this
+            ->httpResponse()
+            ->setMessage(__('Reseller account deletion requested successfully.'));
     }
 
     public function generateLink(Request $request, int $productId = null): BaseHttpResponse
