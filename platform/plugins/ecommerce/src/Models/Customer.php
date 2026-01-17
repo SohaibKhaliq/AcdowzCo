@@ -75,6 +75,9 @@ class Customer extends BaseModel implements
         'is_reseller_active' => 'boolean',
         'reseller_balance' => 'decimal:2',
         'reseller_commission_rate' => 'decimal:2',
+        'reseller_deletion_requested_at' => 'datetime',
+        'reseller_deleted_at' => 'datetime',
+        'reseller_disabled_at' => 'datetime',
     ];
 
     public function sendPasswordResetNotification($token): void
@@ -210,11 +213,11 @@ class Customer extends BaseModel implements
     {
         $baseUrl = url('/');
         $resellerId = $this->reseller_id;
-        
+
         if ($productId) {
             return $baseUrl . '/product/' . $productId . '?ref=' . $resellerId;
         }
-        
+
         return $baseUrl . '?ref=' . $resellerId;
     }
 
@@ -232,7 +235,7 @@ class Customer extends BaseModel implements
             $customer->orders()->update(['user_id' => 0]);
             $customer->addresses()->delete();
             $customer->wishlist()->delete();
-            $customer->reviews()->each(fn (Review $review) => $review->delete());
+            $customer->reviews()->each(fn(Review $review) => $review->delete());
         });
 
         static::deleted(function (Customer $customer): void {
