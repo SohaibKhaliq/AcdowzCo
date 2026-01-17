@@ -83,6 +83,8 @@ class Product extends BaseModel
         'notify_attachment_updated',
         'specification_table_id',
         'slug',
+        'approved_by',
+        'status',
     ];
 
     protected $appends = [
