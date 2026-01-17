@@ -25,12 +25,22 @@ class ResellerDeletionRequestTable extends TableAbstract
                     ->icon('ti ti-check')
                     ->color('success')
                     ->route('reseller-management.process-deletion')
+                    ->action('POST')
+                    ->confirmation()
+                    ->confirmationModalTitle(__('Confirm Approve'))
+                    ->confirmationModalMessage(__('Are you sure you want to approve this deletion request?'))
+                    ->confirmationModalButton(__('Approve'))
                     ->permission('customers.edit'),
                 Action::make('reject')
                     ->label(__('Reject Request'))
                     ->icon('ti ti-x')
                     ->color('danger')
                     ->route('reseller-management.reject-deletion')
+                    ->action('POST')
+                    ->confirmation()
+                    ->confirmationModalTitle(__('Confirm Reject'))
+                    ->confirmationModalMessage(__('Are you sure you want to reject this deletion request?'))
+                    ->confirmationModalButton(__('Reject'))
                     ->permission('customers.edit'),
             ]);
     }
