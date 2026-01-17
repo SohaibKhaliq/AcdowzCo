@@ -221,5 +221,19 @@ return [
                 'verification_note' => 'plugins/marketplace::marketplace.email.verification_note',
             ],
         ],
+        'vendor-agreement-updated' => [
+            'title' => 'Vendor Agreement Updated',
+            'description' => 'Send to vendor when their agreement terms are updated by admin',
+            'subject' => 'Your Vendor Agreement Has Been Updated',
+            'can_off' => true,
+            'enabled' => true,
+            'variables' => [
+                'vendor_name' => 'plugins/marketplace::marketplace.vendor_name',
+                'store_name' => 'plugins/marketplace::marketplace.store_name',
+                'agreement_type' => 'Agreement Type',
+                'agreement_display' => 'Agreement Display Text',
+                'site_url' => 'Site URL',
+            ],
+        ],
     ],
 ];
