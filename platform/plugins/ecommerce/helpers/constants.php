@@ -211,3 +211,7 @@ if (! defined('INVOICE_PAYMENT_CREATED')) {
 if (! defined('ACTION_AFTER_ORDER_RETURN_STATUS_COMPLETED')) {
     define('ACTION_AFTER_ORDER_RETURN_STATUS_COMPLETED', 'after_order_return_status_completed');
 }
+
+if (! defined('RESELLER_APPLICATION_MODULE_SCREEN_NAME')) {
+    define('RESELLER_APPLICATION_MODULE_SCREEN_NAME', 'reseller-application');
+}
