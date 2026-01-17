@@ -6,10 +6,11 @@ use Botble\Base\Facades\Html;
 use Botble\Ecommerce\Models\ResellerApplication;
 use Botble\Table\Abstracts\TableAbstract;
 use Botble\Table\Actions\EditAction;
+use Botble\Table\Columns\FormattedColumn;
 use Botble\Table\Columns\Column;
-use Botble\Table\Columns\CreatedAtColumn;
 use Botble\Table\Columns\IdColumn;
 use Botble\Table\Columns\StatusColumn;
+use Botble\Table\Columns\CreatedAtColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -45,10 +46,13 @@ class ResellerApplicationTable extends TableAbstract
     {
         return [
             IdColumn::make(),
-            Column::make('customer_id')
+            FormattedColumn::make('customer_id')
                 ->title(trans('plugins/ecommerce::customer.name'))
                 ->alignStart()
-                ->renderUsing(fn($item) => $item->customer ? Html::link(route('customers.edit', $item->customer->id), $item->customer->name) : '—'),
+                ->renderUsing(function (FormattedColumn $column) {
+                    $item = $column->getItem();
+                    return $item->customer && $item->customer->id ? Html::link(route('customers.edit', $item->customer->id), $item->customer->name) : '—';
+                }),
             Column::make('notes')
                 ->title(trans('plugins/ecommerce::reseller.penalties.reason'))
                 ->alignStart()
