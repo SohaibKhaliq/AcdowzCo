@@ -100,6 +100,84 @@ class LoginForm extends AuthForm
             ->add('closeRow', HtmlField::class, [
                 'html' => '</div>',
             ])
+            ->add('otp_toggle', HtmlField::class, [
+                'html' => '<div class="mb-3"><a href="javascript:void(0)" id="toggle-otp-login" class="text-primary">' . __('Login with OTP') . '</a></div>',
+            ])
+            ->add('otp_fields', HtmlField::class, [
+                'html' => '
+                    <div id="otp-login-wrapper" style="display: none;">
+                        <div class="mb-3">
+                            <label class="form-label">' . __('Phone Number') . '</label>
+                            <div class="input-group">
+                                <input type="text" id="otp-phone" class="form-control" placeholder="' . __('Enter phone number') . '">
+                                <button type="button" class="btn btn-secondary" id="send-otp-btn">' . __('Send OTP') . '</button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">' . __('Enter 6-digit OTP') . '</label>
+                            <input type="text" id="otp-code" class="form-control" maxlength="6" placeholder="000000">
+                        </div>
+                        <button type="button" class="btn btn-primary w-100 mb-3" id="verify-otp-btn">' . __('Verify & Login') . '</button>
+                        <div class="mb-3"><a href="javascript:void(0)" id="toggle-password-login" class="text-primary">' . __('Login with Password') . '</a></div>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const otpWrapper = document.getElementById("otp-login-wrapper");
+                            const passwordForm = document.querySelector(".auth-form form");
+                            const toggleOtp = document.getElementById("toggle-otp-login");
+                            const togglePassword = document.getElementById("toggle-password-login");
+                            const sendOtpBtn = document.getElementById("send-otp-btn");
+                            const verifyOtpBtn = document.getElementById("verify-otp-btn");
+
+                            toggleOtp.addEventListener("click", function() {
+                                passwordForm.style.display = "none";
+                                otpWrapper.style.display = "block";
+                            });
+
+                            togglePassword.addEventListener("click", function() {
+                                passwordForm.style.display = "block";
+                                otpWrapper.style.display = "none";
+                            });
+
+                            sendOtpBtn.addEventListener("click", function() {
+                                const phone = document.getElementById("otp-phone").value;
+                                if (!phone) { alert("' . __('Please enter phone number') . '"); return; }
+                                sendOtpBtn.disabled = true;
+                                fetch("' . route('customer.otp.send') . '", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "X-CSRF-TOKEN": document.querySelector(\'meta[name="csrf-token"]\').content
+                                    },
+                                    body: JSON.stringify({ phone: phone })
+                                }).then(res => res.json()).then(data => {
+                                    alert(data.message);
+                                    if (data.error) sendOtpBtn.disabled = false;
+                                });
+                            });
+
+                            verifyOtpBtn.addEventListener("click", function() {
+                                const phone = document.getElementById("otp-phone").value;
+                                const otp = document.getElementById("otp-code").value;
+                                fetch("' . route('customer.otp.verify') . '", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "X-CSRF-TOKEN": document.querySelector(\'meta[name="csrf-token"]\').content
+                                    },
+                                    body: JSON.stringify({ phone: phone, otp: otp })
+                                }).then(res => res.json()).then(data => {
+                                    if (data.error) {
+                                        alert(data.message);
+                                    } else {
+                                        window.location.href = data.data.next_url;
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                ',
+            ])
             ->submitButton(__('Login'), 'ti ti-arrow-narrow-right')
             ->add(
                 'register',
