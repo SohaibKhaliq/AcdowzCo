@@ -980,29 +980,25 @@ class EcommerceServiceProvider extends ServiceProvider
                         'permissions' => ['customers.index'],
                     ]);
                 })
-                ->when(Route::has('ecommerce.reseller-applications.index'), function (DashboardMenuSupport $dashboardMenu): void {
-                    $dashboardMenu->registerItem([
-                        'id' => 'cms-plugins-ecommerce-reseller-applications',
-                        'priority' => 40,
-                        'parent_id' => 'cms-plugins-resellers',
-                        'name' => 'Reseller Applications',
-                        'icon' => 'ti ti-file-text',
-                        'url' => fn() => route('ecommerce.reseller-applications.index'),
-                        'permissions' => ['customers.index'],
-                    ]);
-                })
-                ->when(Route::has('ecommerce.reseller-management.index'), function (DashboardMenuSupport $dashboardMenu): void {
-                    $dashboardMenu->registerItem([
-                        'id' => 'cms-plugins-ecommerce-reseller-management',
-                        'priority' => 50,
-                        'parent_id' => 'cms-plugins-resellers',
-                        'name' => 'Reseller Management',
-                        'icon' => 'ti ti-settings',
-                        'url' => fn() => route('ecommerce.reseller-management.index'),
-                        'permissions' => ['customers.index'],
-                    ]);
-                })
-                ->when(Route::has('ecommerce.reseller-management.deletion-requests'), function (DashboardMenuSupport $dashboardMenu): void {
+                ->registerItem([
+                    'id' => 'cms-plugins-ecommerce-reseller-applications',
+                    'priority' => 40,
+                    'parent_id' => 'cms-plugins-resellers',
+                    'name' => 'Reseller Applications',
+                    'icon' => 'ti ti-file-text',
+                    'url' => fn() => route('reseller-applications.index'),
+                    'permissions' => ['customers.index'],
+                ])
+                ->registerItem([
+                    'id' => 'cms-plugins-ecommerce-reseller-management',
+                    'priority' => 50,
+                    'parent_id' => 'cms-plugins-resellers',
+                    'name' => 'Reseller Management',
+                    'icon' => 'ti ti-settings',
+                    'url' => fn() => route('reseller-management.index'),
+                    'permissions' => ['customers.index'],
+                ])
+                ->when(true, function (DashboardMenuSupport $dashboardMenu): void {
                     $pendingDeletions = \Botble\Ecommerce\Models\Customer::whereNotNull('reseller_deletion_requested_at')
                         ->where('is_reseller_active', true)
                         ->count();
@@ -1013,7 +1009,7 @@ class EcommerceServiceProvider extends ServiceProvider
                         'parent_id' => 'cms-plugins-resellers',
                         'name' => 'Deletion Requests',
                         'icon' => 'ti ti-trash',
-                        'url' => fn() => route('ecommerce.reseller-management.deletion-requests'),
+                        'url' => fn() => route('reseller-management.deletion-requests'),
                         'permissions' => ['customers.index'],
                         'badge' => $pendingDeletions > 0 ? [
                             'label' => $pendingDeletions,
