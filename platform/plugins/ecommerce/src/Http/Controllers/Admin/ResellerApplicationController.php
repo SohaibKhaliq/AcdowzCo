@@ -23,15 +23,17 @@ class ResellerApplicationController extends BaseController
         return $table->renderTable();
     }
 
-    public function edit(ResellerApplication $resellerApplication, FormBuilder $formBuilder)
+    public function edit(int|string $id, FormBuilder $formBuilder)
     {
+        $resellerApplication = ResellerApplication::findOrFail($id);
         $this->pageTitle(__('Process Reseller Application'));
 
         return $formBuilder->create(ResellerApplicationForm::class, ['model' => $resellerApplication])->renderForm();
     }
 
-    public function update(ResellerApplication $resellerApplication, Request $request, BaseHttpResponse $response)
+    public function update(int|string $id, Request $request, BaseHttpResponse $response)
     {
+        $resellerApplication = ResellerApplication::findOrFail($id);
         $status = $request->input('status');
         $oldStatus = $resellerApplication->status;
 
