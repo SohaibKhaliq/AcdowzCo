@@ -10,12 +10,10 @@
             <ul class="nav flex-column dashboard-navigation mb-5">
                 @foreach (DashboardMenu::getAll('customer') as $item)
                     <li class="nav-item" id="{{ $item['id'] }}">
-                        <a
-                            class="nav-link
+                        <a class="nav-link
                             @if ($item['active']) active @endif"
-                            href="{{ $item['url']  }}"
-                            aria-current="@if ($item['active']) true @else false @endif"
-                        >
+                            href="{{ $item['url'] }}"
+                            aria-current="@if ($item['active']) true @else false @endif">
                             @if ($item['icon'])
                                 <x-core::icon :name="$item['icon']" />
                             @endif
@@ -25,7 +23,7 @@
                 @endforeach
             </ul>
         </div>
-        
+
         <div class="col-lg-9 col-md-8 col-12">
             <div class="dashboard-wrapper">
                 <div class="row mb-4">
@@ -35,17 +33,26 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <h5 class="mb-1">{{ __('Reseller Mode') }}</h5>
-                                        <p class="mb-0 text-muted">{{ __('Your Reseller ID:') }} <code>{{ $customer->reseller_id }}</code></p>
+                                        <p class="mb-0 text-muted">{{ __('Your Reseller ID:') }}
+                                            <code>{{ $customer->reseller_id }}</code></p>
                                     </div>
                                     <div>
                                         @if ($customer->reseller_deletion_requested_at)
-                                            <span class="badge bg-danger">{{ __('Account Deletion Requested') }}</span>
+                                            <div>
+                                                <span
+                                                    class="badge bg-danger">{{ __('Account Deletion Requested') }}</span>
+                                                <small class="d-block text-muted mt-1">{{ __('Requested on') }}:
+                                                    {{ $customer->reseller_deletion_requested_at->format('M d, Y H:i') }}</small>
+                                            </div>
                                         @else
                                             <div class="d-flex gap-2">
-                                                <button type="button" class="btn btn-{{ $customer->is_reseller_active ? 'danger' : 'success' }}" onclick="toggleResellerStatus(this)">
+                                                <button type="button"
+                                                    class="btn btn-{{ $customer->is_reseller_active ? 'danger' : 'success' }}"
+                                                    onclick="toggleResellerStatus(this)">
                                                     {{ $customer->is_reseller_active ? __('Disable') : __('Enable') }}
                                                 </button>
-                                                <button type="button" class="btn btn-outline-danger" onclick="requestResellerDeletion(this)">
+                                                <button type="button" class="btn btn-outline-danger"
+                                                    onclick="requestResellerDeletion(this)">
                                                     {{ __('Delete Account') }}
                                                 </button>
                                             </div>
@@ -117,7 +124,8 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="3" class="text-center">{{ __('No clicks yet') }}</td>
+                                                    <td colspan="3" class="text-center">{{ __('No clicks yet') }}
+                                                    </td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
@@ -150,12 +158,15 @@
                                                     <td>#{{ $order->order_id }}</td>
                                                     <td>{{ format_price($order->order_amount) }}</td>
                                                     <td>{{ format_price($order->commission_earned) }}</td>
-                                                    <td><span class="badge bg-{{ $order->status == 'paid' ? 'success' : ($order->status == 'approved' ? 'info' : 'warning') }}">{{ ucfirst($order->status) }}</span></td>
+                                                    <td><span
+                                                            class="badge bg-{{ $order->status == 'paid' ? 'success' : ($order->status == 'approved' ? 'info' : 'warning') }}">{{ ucfirst($order->status) }}</span>
+                                                    </td>
                                                     <td>{{ $order->created_at->format('Y-m-d') }}</td>
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="5" class="text-center">{{ __('No orders yet') }}</td>
+                                                    <td colspan="5" class="text-center">{{ __('No orders yet') }}
+                                                    </td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
@@ -172,61 +183,63 @@
 
 <script>
     function toggleResellerStatus(button) {
-        if (!confirm('{{ __("Are you sure?") }}')) return;
+        if (!confirm('{{ __('Are you sure?') }}')) return;
 
         button.disabled = true;
-        
-        fetch('{{ route("customer.reseller.toggle-status") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert(data.message);
+
+        fetch('{{ route('customer.reseller.toggle-status') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.message);
+                    button.disabled = false;
+                } else {
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('{{ __('An error occurred') }}');
                 button.disabled = false;
-            } else {
-                window.location.reload();
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('{{ __("An error occurred") }}');
-            button.disabled = false;
-        });
+            });
     }
 
     function requestResellerDeletion(button) {
-        if (!confirm('{{ __("Are you sure you want to request deletion of your reseller account? This action cannot be undone.") }}')) {
+        if (!confirm(
+                '{{ __('Are you sure you want to request deletion of your reseller account? This action cannot be undone.') }}'
+                )) {
             return;
         }
 
         button.disabled = true;
-        
-        fetch('{{ route("customer.reseller.request-delete") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-             if (data.error) {
-                alert(data.message);
+
+        fetch('{{ route('customer.reseller.request-delete') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.message);
+                    button.disabled = false;
+                } else {
+                    alert(data.message);
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('{{ __('An error occurred') }}');
                 button.disabled = false;
-            } else {
-                alert(data.message);
-                window.location.reload();
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('{{ __("An error occurred") }}');
-            button.disabled = false;
-        });
+            });
     }
 </script>
