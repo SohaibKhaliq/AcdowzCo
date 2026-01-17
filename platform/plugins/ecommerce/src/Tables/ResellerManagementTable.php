@@ -27,6 +27,11 @@ class ResellerManagementTable extends TableAbstract
                     ->icon('ti ti-user-off')
                     ->color('warning')
                     ->route('reseller-management.disable')
+                    ->action('POST')
+                    ->confirmation()
+                    ->confirmationModalTitle(__('Confirm Disable'))
+                    ->confirmationModalMessage(__('Are you sure you want to disable this reseller?'))
+                    ->confirmationModalButton(__('Disable'))
                     ->permission('customers.edit')
                     ->displayIf(fn($item) => $item->is_reseller_active),
                 Action::make('enable')
@@ -34,6 +39,7 @@ class ResellerManagementTable extends TableAbstract
                     ->icon('ti ti-user-check')
                     ->color('success')
                     ->route('reseller-management.enable')
+                    ->action('POST')
                     ->permission('customers.edit')
                     ->displayIf(fn($item) => !$item->is_reseller_active),
             ]);
