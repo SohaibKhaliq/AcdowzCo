@@ -143,12 +143,19 @@
                                 {{ __('Reseller Dashboard') }}
                             </a>
                         @else
-                            <form action="{{ route('customer.reseller.toggle-status') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-primary btn-sm">
+                            @php
+                                $pendingApplication = $customer->resellerApplications()->where('status', 'pending')->exists();
+                            @endphp
+                            @if ($pendingApplication)
+                                <a href="{{ route('customer.reseller.apply') }}" class="btn btn-info btn-sm">
+                                    <x-core::icon name="ti ti-clock" class="me-1" />
+                                    {{ __('Application Pending') }}
+                                </a>
+                            @else
+                                <a href="{{ route('customer.reseller.apply') }}" class="btn btn-primary btn-sm">
                                     {{ __('Become a Reseller') }}
-                                </button>
-                            </form>
+                                </a>
+                            @endif
                         @endif
                     </div>
                 </div>
