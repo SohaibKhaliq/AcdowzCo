@@ -87,36 +87,6 @@ AdminHelper::registerRoutes(
             });
         });
 
-        Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers\Admin', 'prefix' => 'ecommerce', 'as' => 'ecommerce.'], function (): void {
-            Route::group(['prefix' => 'reseller-applications', 'as' => 'reseller-applications.'], function (): void {
-                Route::get('/', [
-                    'as' => 'index',
-                    'uses' => 'ResellerApplicationController@index',
-                    'permission' => 'customers.edit',
-                ]);
-                Route::get('{id}/edit', [
-                    'as' => 'edit',
-                    'uses' => 'ResellerApplicationController@edit',
-                    'permission' => 'customers.edit',
-                ]);
-                Route::put('{id}', [
-                    'as' => 'update',
-                    'uses' => 'ResellerApplicationController@update',
-                    'permission' => 'customers.edit',
-                ]);
-                Route::post('approve/{reseller_application}', [
-                    'as' => 'approve',
-                    'uses' => 'ResellerApplicationController@approve',
-                    'permission' => 'customers.edit',
-                ]);
-                Route::post('reject/{reseller_application}', [
-                    'as' => 'reject',
-                    'uses' => 'ResellerApplicationController@reject',
-                    'permission' => 'customers.edit',
-                ]);
-            });
-        });
-
         Route::group(['prefix' => 'tools/data-synchronize/import/customers', 'as' => 'ecommerce.customers.import.', 'permission' => 'ecommerce.customers.import'], function (): void {
             Route::get('/', [ImportCustomerController::class, 'index'])->name('index');
             Route::post('validate', [ImportCustomerController::class, 'validateData'])->name('validate');
@@ -282,17 +252,6 @@ Theme::registerRoutes(function (): void {
                 ])->wherePrimaryKey();
             });
 
-            Route::group(['prefix' => 'reseller', 'as' => 'customer.reseller.'], function (): void {
-                Route::post('toggle-status', [
-                    'as' => 'toggle-status',
-                    'uses' => 'ResellerController@toggleStatus',
-                ]);
-                Route::post('request-delete', [
-                    'as' => 'request-delete',
-                    'uses' => 'ResellerController@requestDelete',
-                ]);
-            });
-
             Route::prefix(EcommerceHelper::getPageSlug('customer_order_returns'))->group(function (): void {
                 Route::get('/', [
                     'as' => 'order_returns',
@@ -338,24 +297,9 @@ Theme::registerRoutes(function (): void {
                     'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@dashboard',
                 ]);
 
-                Route::get('apply', [
-                    'as' => 'apply',
-                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@apply',
-                ]);
-
-                Route::post('apply', [
-                    'as' => 'apply.post',
-                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@postApply',
-                ]);
-
                 Route::post('toggle-status', [
                     'as' => 'toggle-status',
                     'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@toggleStatus',
-                ]);
-
-                Route::post('request-delete', [
-                    'as' => 'request-delete',
-                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@requestDelete',
                 ]);
 
                 Route::get('analytics', [
@@ -371,12 +315,12 @@ Theme::registerRoutes(function (): void {
 
             Route::post('country/set', [
                 'as' => 'country.set',
-                'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\CountryController@setCountry',
+                'uses' => 'Customers\Fronts\CountryController@setCountry',
             ]);
 
             Route::get('country/detect', [
                 'as' => 'country.detect',
-                'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\CountryController@detect',
+                'uses' => 'Customers\Fronts\CountryController@detect',
             ]);
         });
 
