@@ -10,6 +10,7 @@ use Botble\Ecommerce\Http\Controllers\Customers\UploadProofController;
 use Botble\Ecommerce\Http\Controllers\Fronts\AccountDeletionController;
 use Botble\Theme\Facades\Theme;
 use Illuminate\Support\Facades\Route;
+use Botble\ACL\Http\Controllers\Auth\LoginController;
 
 AdminHelper::registerRoutes(
     function (): void {
@@ -108,6 +109,9 @@ Theme::registerRoutes(function (): void {
     ], function (): void {
         Route::get(EcommerceHelper::getPageSlug('login'), 'LoginController@showLoginForm')->name('login');
         Route::post('login', 'LoginController@login')->name('login.post');
+
+        Route::post('otp/send', 'OtpLoginController@sendOtp')->name('otp.send');
+        Route::post('otp/verify', 'OtpLoginController@verifyOtp')->name('otp.verify');
 
         if (EcommerceHelper::isCustomerRegistrationEnabled()) {
             Route::get(EcommerceHelper::getPageSlug('register'), 'RegisterController@showRegistrationForm')->name(
@@ -292,17 +296,27 @@ Theme::registerRoutes(function (): void {
                     'as' => 'dashboard',
                     'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@dashboard',
                 ]);
-                
+
+                Route::get('apply', [
+                    'as' => 'apply',
+                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@apply',
+                ]);
+
+                Route::post('apply', [
+                    'as' => 'apply.post',
+                    'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@postApply',
+                ]);
+
                 Route::post('toggle-status', [
                     'as' => 'toggle-status',
                     'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@toggleStatus',
                 ]);
-                
+
                 Route::get('analytics', [
                     'as' => 'analytics',
                     'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@analytics',
                 ]);
-                
+
                 Route::get('generate-link/{product?}', [
                     'as' => 'generate-link',
                     'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\ResellerController@generateLink',
@@ -311,12 +325,12 @@ Theme::registerRoutes(function (): void {
 
             Route::post('country/set', [
                 'as' => 'country.set',
-                'uses' => 'Fronts\CountryController@setCountry',
+                'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\CountryController@setCountry',
             ]);
 
             Route::get('country/detect', [
                 'as' => 'country.detect',
-                'uses' => 'Fronts\CountryController@detect',
+                'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\CountryController@detect',
             ]);
         });
 
