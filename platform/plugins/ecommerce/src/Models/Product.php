@@ -158,7 +158,7 @@ class Product extends BaseModel
         });
 
         static::deleted(function (Product $product): void {
-            $product->variations()->each(fn (ProductVariation $item) => $item->delete());
+            $product->variations()->each(fn(ProductVariation $item) => $item->delete());
             $product->variationInfo()->delete();
             $product->categories()->detach();
             $product->productAttributeSets()->detach();
@@ -393,7 +393,7 @@ class Product extends BaseModel
             $this->loadMissing('crossSales');
 
             return $this->crossSales->filter(
-                fn (Product $product) => ! $product->pivot->is_variant
+                fn(Product $product) => ! $product->pivot->is_variant
             );
         });
     }
@@ -502,7 +502,7 @@ class Product extends BaseModel
     protected function averageRating(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->reviews_avg
+            get: fn() => $this->reviews_avg
         );
     }
 
@@ -588,7 +588,7 @@ class Product extends BaseModel
     {
         return Attribute::get(function () {
             $taxes = $this->taxes
-                ->where(fn ($item) => ! $item->rules || $item->rules->isEmpty())
+                ->where(fn($item) => ! $item->rules || $item->rules->isEmpty())
                 ->where('status', BaseStatusEnum::PUBLISHED);
 
             if ($taxes->isEmpty() && $defaultTaxRate = get_ecommerce_setting('default_tax_rate')) {
@@ -689,9 +689,11 @@ class Product extends BaseModel
             }
 
             foreach ($faqs as $key => $item) {
-                if (! is_array($item) || ! isset($item[0], $item[1]) ||
+                if (
+                    ! is_array($item) || ! isset($item[0], $item[1]) ||
                     ! isset($item[0]['value'], $item[1]['value']) ||
-                    (! $item[0]['value'] && ! $item[1]['value'])) {
+                    (! $item[0]['value'] && ! $item[1]['value'])
+                ) {
                     Arr::forget($faqs, $key);
                 }
             }
@@ -702,7 +704,7 @@ class Product extends BaseModel
 
     protected function reviewImages(): Attribute
     {
-        return Attribute::get(fn () => $this->reviews->sortByDesc('created_at')->reduce(function ($carry, $item) {
+        return Attribute::get(fn() => $this->reviews->sortByDesc('created_at')->reduce(function ($carry, $item) {
             return array_merge($carry, (array) $item->images);
         }, []));
     }
@@ -743,12 +745,12 @@ class Product extends BaseModel
 
     protected function productFileExternalCount(): Attribute
     {
-        return Attribute::get(fn () => $this->productFiles->filter(fn (ProductFile $file) => $file->is_external_link)->count());
+        return Attribute::get(fn() => $this->productFiles->filter(fn(ProductFile $file) => $file->is_external_link)->count());
     }
 
     protected function productFileInternalCount(): Attribute
     {
-        return Attribute::get(fn () => $this->productFiles->filter(fn (ProductFile $file) => ! $file->is_external_link)->count());
+        return Attribute::get(fn() => $this->productFiles->filter(fn(ProductFile $file) => ! $file->is_external_link)->count());
     }
 
     public function hasFiles(): bool
@@ -885,7 +887,7 @@ class Product extends BaseModel
             ])
             ->leftJoin('ec_product_variations as pv', function (JoinClause $join): void {
                 $join->on('ec_products.id', '=', 'pv.product_id')
-                     ->where('ec_products.is_variation', '=', 1);
+                    ->where('ec_products.is_variation', '=', 1);
             })
             ->leftJoinSub($variationAttributesSubquery, 'va', function (JoinClause $join): void {
                 $join->on('ec_products.id', '=', 'va.product_id');
@@ -1002,13 +1004,13 @@ class Product extends BaseModel
                     'percentage' => get_ecommerce_setting('default_tax_rate') ? Tax::query()->find(get_ecommerce_setting('default_tax_rate'))->percentage : 0,
                 ]]);
 
-            $taxes = $taxes->filter(fn ($tax) => $tax->percentage > 0);
+            $taxes = $taxes->filter(fn($tax) => $tax->percentage > 0);
 
             if ($taxes->isEmpty()) {
                 return null;
             }
 
-            $taxNames = $taxes->map(fn ($tax) => $tax->title . ' ' . $tax->percentage . '%')->implode(' + ');
+            $taxNames = $taxes->map(fn($tax) => $tax->title . ' ' . $tax->percentage . '%')->implode(' + ');
 
             if (EcommerceHelper::isDisplayProductIncludingTaxes()) {
                 return '(' . __('Including :tax', ['tax' => $taxNames]) . ')';
