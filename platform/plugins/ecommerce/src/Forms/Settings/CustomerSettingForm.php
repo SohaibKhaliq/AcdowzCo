@@ -118,6 +118,24 @@ class CustomerSettingForm extends SettingForm
                     ->label(trans('plugins/ecommerce::setting.customer.form.default_avatar'))
                     ->helperText(trans('plugins/ecommerce::setting.customer.form.default_avatar_helper'))
                     ->value(get_ecommerce_setting('customer_default_avatar'))
-            );
+            )
+            ->add(
+                'enable_reseller_system',
+                OnOffCheckboxField::class,
+                OnOffFieldOption::make()
+                    ->label(__('Enable Reseller System'))
+                    ->value($resellerEnabled = get_ecommerce_setting('enable_reseller_system', true))
+            )
+            ->addOpenCollapsible('enable_reseller_system', '1', $resellerEnabled == '1')
+            ->add(
+                'default_reseller_commission_rate',
+                NumberField::class,
+                NumberFieldOption::make()
+                    ->label(__('Default Reseller Commission Rate (%)'))
+                    ->value(get_ecommerce_setting('default_reseller_commission_rate', 5))
+                    ->min(0)
+                    ->max(100)
+            )
+            ->addCloseCollapsible('enable_reseller_system', '1');
     }
 }
