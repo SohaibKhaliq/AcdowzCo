@@ -24,13 +24,13 @@ class ResellerDeletionRequestTable extends TableAbstract
                     ->label(__('Approve Deletion'))
                     ->icon('ti ti-check')
                     ->color('success')
-                    ->route('ecommerce.reseller-management.process-deletion')
+                    ->route('reseller-management.process-deletion')
                     ->permission('customers.edit'),
                 Action::make('reject')
                     ->label(__('Reject Request'))
                     ->icon('ti ti-x')
                     ->color('danger')
-                    ->route('ecommerce.reseller-management.reject-deletion')
+                    ->route('reseller-management.reject-deletion')
                     ->permission('customers.edit'),
             ]);
     }
@@ -42,6 +42,7 @@ class ResellerDeletionRequestTable extends TableAbstract
             ->query()
             ->whereNotNull('reseller_deletion_requested_at')
             ->where('is_reseller_active', true)
+            ->where('is_vendor', false)
             ->select([
                 'id',
                 'name',
