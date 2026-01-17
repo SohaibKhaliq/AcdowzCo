@@ -361,6 +361,44 @@ AdminHelper::registerRoutes(function (): void {
             Route::resource('', 'Admin\ResellerApplicationController')->parameters(['' => 'reseller_application'])->except(['create', 'store', 'destroy']);
         });
 
+        Route::group(['prefix' => 'reseller-management', 'as' => 'reseller-management.'], function (): void {
+            Route::match(['GET', 'POST'], '/', [
+                'as' => 'index',
+                'uses' => 'Admin\ResellerManagementController@index',
+                'permission' => 'customers.index',
+            ]);
+
+            Route::match(['GET', 'POST'], 'deletion-requests', [
+                'as' => 'deletion-requests',
+                'uses' => 'Admin\ResellerManagementController@deletionRequests',
+                'permission' => 'customers.index',
+            ]);
+
+            Route::post('{id}/process-deletion', [
+                'as' => 'process-deletion',
+                'uses' => 'Admin\ResellerManagementController@processDeletion',
+                'permission' => 'customers.edit',
+            ])->wherePrimaryKey();
+
+            Route::post('{id}/reject-deletion', [
+                'as' => 'reject-deletion',
+                'uses' => 'Admin\ResellerManagementController@rejectDeletion',
+                'permission' => 'customers.edit',
+            ])->wherePrimaryKey();
+
+            Route::post('{id}/disable', [
+                'as' => 'disable',
+                'uses' => 'Admin\ResellerManagementController@disableReseller',
+                'permission' => 'customers.edit',
+            ])->wherePrimaryKey();
+
+            Route::post('{id}/enable', [
+                'as' => 'enable',
+                'uses' => 'Admin\ResellerManagementController@enableReseller',
+                'permission' => 'customers.edit',
+            ])->wherePrimaryKey();
+        });
+
         Route::group(['prefix' => 'products', 'as' => 'products.'], function (): void {
             Route::get('{id}/countries', [
                 'as' => 'countries.index',
