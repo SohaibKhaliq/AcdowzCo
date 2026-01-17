@@ -87,6 +87,36 @@ AdminHelper::registerRoutes(
             });
         });
 
+        Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers\Admin', 'prefix' => 'ecommerce', 'as' => 'ecommerce.'], function (): void {
+            Route::group(['prefix' => 'reseller-applications', 'as' => 'reseller-applications.'], function (): void {
+                Route::get('/', [
+                    'as' => 'index',
+                    'uses' => 'ResellerApplicationController@index',
+                    'permission' => 'customers.edit',
+                ]);
+                Route::get('{id}/edit', [
+                    'as' => 'edit',
+                    'uses' => 'ResellerApplicationController@edit',
+                    'permission' => 'customers.edit',
+                ]);
+                Route::put('{id}', [
+                    'as' => 'update',
+                    'uses' => 'ResellerApplicationController@update',
+                    'permission' => 'customers.edit',
+                ]);
+                Route::post('approve/{reseller_application}', [
+                    'as' => 'approve',
+                    'uses' => 'ResellerApplicationController@approve',
+                    'permission' => 'customers.edit',
+                ]);
+                Route::post('reject/{reseller_application}', [
+                    'as' => 'reject',
+                    'uses' => 'ResellerApplicationController@reject',
+                    'permission' => 'customers.edit',
+                ]);
+            });
+        });
+
         Route::group(['prefix' => 'tools/data-synchronize/import/customers', 'as' => 'ecommerce.customers.import.', 'permission' => 'ecommerce.customers.import'], function (): void {
             Route::get('/', [ImportCustomerController::class, 'index'])->name('index');
             Route::post('validate', [ImportCustomerController::class, 'validateData'])->name('validate');
