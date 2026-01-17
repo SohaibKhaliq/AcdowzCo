@@ -320,12 +320,12 @@ Theme::registerRoutes(function (): void {
 
             Route::post('country/set', [
                 'as' => 'country.set',
-                'uses' => 'Customers\Fronts\CountryController@setCountry',
+                'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\CountryController@setCountry',
             ]);
 
             Route::get('country/detect', [
                 'as' => 'country.detect',
-                'uses' => 'Customers\Fronts\CountryController@detect',
+                'uses' => '\Botble\Ecommerce\Http\Controllers\Fronts\CountryController@detect',
             ]);
         });
 
