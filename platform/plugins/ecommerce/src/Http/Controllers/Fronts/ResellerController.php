@@ -143,7 +143,16 @@ class ResellerController extends BaseController
         $customer->reseller_deletion_requested_at = Carbon::now();
         $customer->save();
 
-        // Send email notification (To be implemented with events/listeners)
+        // Send email notification to admin
+        $mailer = \Botble\Base\Facades\EmailHandler::module('ecommerce');
+        $data = [
+            'customer_name' => $customer->name,
+            'customer_email' => $customer->email,
+            'reseller_id' => $customer->reseller_id,
+            'requested_at' => $customer->reseller_deletion_requested_at->format('Y-m-d H:i:s'),
+        ];
+        $mailer->setVariableValues($data);
+        $mailer->sendUsingTemplate('reseller-deletion-requested', get_admin_email()->first());
 
         return $this
             ->httpResponse()
