@@ -22,6 +22,7 @@ class ResellerApplicationForm extends FormAbstract
         $this
             ->model(ResellerApplication::class)
             ->setMethod('PUT')
+            ->setUrl(route('ecommerce.reseller-applications.update', $resellerApplication->id))
             ->columns()
             ->add('customer_details', HtmlField::class, [
                 'html' => $customer ? sprintf(
