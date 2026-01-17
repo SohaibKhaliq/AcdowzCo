@@ -991,6 +991,36 @@ class EcommerceServiceProvider extends ServiceProvider
                         'permissions' => ['customers.index'],
                     ]);
                 })
+                ->when(Route::has('ecommerce.reseller-management.index'), function (DashboardMenuSupport $dashboardMenu): void {
+                    $dashboardMenu->registerItem([
+                        'id' => 'cms-plugins-ecommerce-reseller-management',
+                        'priority' => 50,
+                        'parent_id' => 'cms-plugins-resellers',
+                        'name' => 'Reseller Management',
+                        'icon' => 'ti ti-settings',
+                        'url' => fn() => route('ecommerce.reseller-management.index'),
+                        'permissions' => ['customers.index'],
+                    ]);
+                })
+                ->when(Route::has('ecommerce.reseller-management.deletion-requests'), function (DashboardMenuSupport $dashboardMenu): void {
+                    $pendingDeletions = \Botble\Ecommerce\Models\Customer::whereNotNull('reseller_deletion_requested_at')
+                        ->where('is_reseller_active', true)
+                        ->count();
+
+                    $dashboardMenu->registerItem([
+                        'id' => 'cms-plugins-ecommerce-reseller-deletion-requests',
+                        'priority' => 60,
+                        'parent_id' => 'cms-plugins-resellers',
+                        'name' => 'Deletion Requests',
+                        'icon' => 'ti ti-trash',
+                        'url' => fn() => route('ecommerce.reseller-management.deletion-requests'),
+                        'permissions' => ['customers.index'],
+                        'badge' => $pendingDeletions > 0 ? [
+                            'label' => $pendingDeletions,
+                            'color' => 'danger',
+                        ] : null,
+                    ]);
+                })
                 ->when(EcommerceHelper::isProductSpecificationEnabled(), function (DashboardMenuSupport $dashboardMenu): void {
                     $dashboardMenu
                         ->registerItem([
