@@ -146,6 +146,11 @@ class Customer extends BaseModel implements
         return $this->hasMany(ResellerPenalty::class, 'reseller_id');
     }
 
+    public function resellerApplications(): HasMany
+    {
+        return $this->hasMany(ResellerApplication::class, 'customer_id');
+    }
+
     public function getOrCreateWallet(): ResellerWallet
     {
         return $this->resellerWallet()->firstOrCreate(
