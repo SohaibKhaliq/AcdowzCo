@@ -103,9 +103,50 @@ class StoreController extends BaseController
 
     public function update(Store $store, StoreRequest $request)
     {
+        $originalAgreementData = [
+            'agreement_type' => $store->agreement_type,
+            'agreement_value' => $store->agreement_value,
+            'commission_rate' => $store->commission_rate,
+            'subscription_plan_id' => $store->subscription_plan_id,
+        ];
+
         StoreForm::createFromModel($store)
             ->setRequest($request)
             ->save();
+
+        // Check if agreement fields were updated
+        $agreementFieldsChanged =
+            $request->input('agreement_type') != $originalAgreementData['agreement_type'] ||
+            $request->input('agreement_value') != $originalAgreementData['agreement_value'] ||
+            $request->input('commission_rate') != $originalAgreementData['commission_rate'] ||
+            $request->input('subscription_plan_id') != $originalAgreementData['subscription_plan_id'];
+
+        if ($agreementFieldsChanged) {
+            $store->updateAgreement([
+                'agreement_type' => $request->input('agreement_type'),
+                'agreement_value' => $request->input('agreement_value'),
+                'commission_rate' => $request->input('commission_rate'),
+                'subscription_plan_id' => $request->input('subscription_plan_id'),
+                'agreement_notes' => $request->input('agreement_notes'),
+            ], Auth::id());
+
+            // Send email notification to vendor
+            if ($store->customer && $store->customer->email) {
+                try {
+                    EmailHandler::setModule(MARKETPLACE_MODULE_SCREEN_NAME)
+                        ->setVariableValues([
+                            'store_name' => $store->name,
+                            'vendor_name' => $store->customer->name,
+                            'agreement_type' => $store->agreement_type,
+                            'agreement_display' => $store->getAgreementDisplayText(),
+                        ])
+                        ->sendUsingTemplate('vendor-agreement-updated', $store->customer->email);
+                } catch (\Exception $e) {
+                    // Log error but don't fail the request
+                    \Illuminate\Support\Facades\Log::error('Failed to send agreement update email: ' . $e->getMessage());
+                }
+            }
+        }
 
         if ($request->has('social_links')) {
             if ($socialLinks = $request->input('social_links', [])) {
