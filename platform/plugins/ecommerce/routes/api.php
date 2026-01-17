@@ -19,6 +19,7 @@ use Botble\Ecommerce\Http\Controllers\API\ProductController;
 use Botble\Ecommerce\Http\Controllers\API\ReviewController;
 use Botble\Ecommerce\Http\Controllers\API\TaxController;
 use Botble\Ecommerce\Http\Controllers\API\WishlistController;
+use Botble\Ecommerce\Http\Controllers\API\EcommerceApiController;
 use Botble\Ecommerce\Http\Middleware\ApiCurrencyMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -83,7 +84,7 @@ Route::group([
     });
 
     Route::get('coupons', [CouponController::class, 'index']);
-    
+
     Route::group(['middleware' => ['api.optional.auth']], function (): void {
         Route::post('coupon/apply', [CouponController::class, 'apply']);
         Route::post('coupon/remove', [CouponController::class, 'remove']);
@@ -109,4 +110,18 @@ Route::group([
     Route::post('compare/{id}', [CompareController::class, 'store']);
     Route::delete('compare/{id}', [CompareController::class, 'destroy']);
     Route::get('compare/{id}', [CompareController::class, 'index']);
+
+    // Enhanced ecommerce API routes
+    Route::post('send-phone-otp', [EcommerceApiController::class, 'sendPhoneOtp']);
+    Route::post('verify-phone-otp', [EcommerceApiController::class, 'verifyPhoneOtp']);
+    Route::post('buy-now', [EcommerceApiController::class, 'buyNow']);
+});
+
+// Customer API routes - require customer authentication
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('api/v1/ecommerce/customer')->group(function () {
+        Route::get('profile', [EcommerceApiController::class, 'getUserProfile']);
+        Route::get('reseller-dashboard', [EcommerceApiController::class, 'getResellerDashboard']);
+        Route::post('generate-referral-link', [EcommerceApiController::class, 'generateReferralLink']);
+    });
 });
