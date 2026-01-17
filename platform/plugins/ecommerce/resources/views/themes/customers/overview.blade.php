@@ -112,4 +112,47 @@
             </div>
         </div>
     @endif
+
+    <!-- Reseller Section -->
+    @if (get_ecommerce_setting('enable_reseller_system', true))
+        <div class="card border-0 bg-secondary bg-opacity-10 mt-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="bg-secondary bg-opacity-20 rounded-circle p-3 d-inline-block">
+                            <x-core::icon name="ti ti-users" class="text-white" size="lg" />
+                        </span>
+                    </div>
+                    <div class="col">
+                        <h5 class="card-title h6 mb-1">{{ __('Reseller Program') }}</h5>
+                        @if ($customer->is_reseller_active)
+                            <p class="card-text text-muted small mb-0">
+                                {{ __('You are an active reseller!') }} 
+                                <strong>{{ __('ID') }}: {{ $customer->reseller_id }}</strong>
+                            </p>
+                        @else
+                            <p class="card-text text-muted small mb-0">
+                                {{ __('Earn commissions by sharing our products with others.') }}
+                            </p>
+                        @endif
+                    </div>
+                    <div class="col-12 col-md-auto mt-3 mt-md-0">
+                        @if ($customer->is_reseller_active)
+                            <a href="{{ route('customer.reseller.dashboard') }}" class="btn btn-secondary btn-sm">
+                                <x-core::icon name="ti ti-layout-dashboard" class="me-1" />
+                                {{ __('Reseller Dashboard') }}
+                            </a>
+                        @else
+                            <form action="{{ route('customer.reseller.toggle-status') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    {{ __('Become a Reseller') }}
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
