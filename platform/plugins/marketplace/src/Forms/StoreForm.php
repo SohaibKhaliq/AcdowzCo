@@ -130,23 +130,58 @@ class StoreForm extends FormAbstract
                 'choices' => [
                     'commission' => __('Commission (%)'),
                     'flat_fee' => __('Flat Fee'),
+                    'subscription' => __('Subscription'),
+                ],
+                'help_block' => [
+                    'text' => __('Commission: Percentage per sale | Flat Fee: Fixed periodic fee | Subscription: Based on plan'),
                 ],
                 'colspan' => 2,
             ])
             ->add('agreement_value', NumberField::class, [
                 'label' => __('Agreement Value'),
-                'required' => true,
                 'attr' => [
-                    'placeholder' => __('Commission % or Flat Fee amount'),
+                    'placeholder' => __('For commission (%) or flat fee amount'),
+                    'step' => '0.01',
+                ],
+                'help_block' => [
+                    'text' => __('Used for commission percentage or flat fee amount'),
                 ],
                 'colspan' => 2,
+            ])
+            ->add('commission_rate', NumberField::class, [
+                'label' => __('Commission Rate (%)'),
+                'attr' => [
+                    'placeholder' => __('Override default commission rate'),
+                    'step' => '0.01',
+                    'min' => '0',
+                    'max' => '100',
+                ],
+                'help_block' => [
+                    'text' => __('Specific commission rate for this vendor'),
+                ],
+                'colspan' => 2,
+            ])
+            ->add('subscription_plan_id', SelectField::class, [
+                'label' => __('Subscription Plan'),
+                'choices' => [0 => __('-- Select Plan --')] + \Botble\Marketplace\Models\SubscriptionPlan::query()
+                    ->where('status', 'published')
+                    ->pluck('name', 'id')
+                    ->all(),
+                'help_block' => [
+                    'text' => __('For subscription-based vendors'),
+                ],
+                'colspan' => 3,
             ])
             ->add('agreement_notes', TextareaField::class, [
                 'label' => __('Agreement Notes'),
                 'attr' => [
                     'rows' => 3,
                 ],
-                'colspan' => 2,
+                'colspan' => 3,
+            ])
+            ->add('agreement_info', HtmlField::class, [
+                'html' => $this->getModel()->id ? view('plugins/marketplace::stores.partials.agreement-info', ['store' => $this->getModel()]) : '',
+                'colspan' => 6,
             ])
             ->when(! MarketplaceHelper::hideStoreSocialLinks(), function (): void {
                 $this
