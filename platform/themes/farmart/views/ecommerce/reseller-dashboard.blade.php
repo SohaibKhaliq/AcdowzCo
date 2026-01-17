@@ -6,7 +6,25 @@
 
 <div class="container">
     <div class="row">
-        @include('plugins/ecommerce::themes.customers.sidebar')
+        <div class="col-md-3">
+            <ul class="nav flex-column dashboard-navigation mb-5">
+                @foreach (DashboardMenu::getAll('customer') as $item)
+                    <li class="nav-item" id="{{ $item['id'] }}">
+                        <a
+                            class="nav-link
+                            @if ($item['active']) active @endif"
+                            href="{{ $item['url']  }}"
+                            aria-current="@if ($item['active']) true @else false @endif"
+                        >
+                            @if ($item['icon'])
+                                <x-core::icon :name="$item['icon']" />
+                            @endif
+                            {{ __($item['name']) }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
         
         <div class="col-lg-9 col-md-8 col-12">
             <div class="dashboard-wrapper">
@@ -20,9 +38,18 @@
                                         <p class="mb-0 text-muted">{{ __('Your Reseller ID:') }} <code>{{ $customer->reseller_id }}</code></p>
                                     </div>
                                     <div>
-                                        <button type="button" class="btn btn-{{ $customer->is_reseller_active ? 'danger' : 'success' }}" id="toggle-reseller-status">
-                                            {{ $customer->is_reseller_active ? __('Disable') : __('Enable') }}
-                                        </button>
+                                        @if ($customer->reseller_deletion_requested_at)
+                                            <span class="badge bg-danger">{{ __('Account Deletion Requested') }}</span>
+                                        @else
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-{{ $customer->is_reseller_active ? 'danger' : 'success' }}" onclick="toggleResellerStatus(this)">
+                                                    {{ $customer->is_reseller_active ? __('Disable') : __('Enable') }}
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger" onclick="requestResellerDeletion(this)">
+                                                    {{ __('Delete Account') }}
+                                                </button>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -145,26 +172,63 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        $('#toggle-reseller-status').on('click', function() {
-            const btn = $(this);
-            btn.prop('disabled', true);
-            
-            $.ajax({
-                url: '{{ route("customer.reseller.toggle-status") }}',
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    window.location.reload();
-                },
-                error: function() {
-                    alert('{{ __("Error updating reseller status") }}');
-                    btn.prop('disabled', false);
-                }
-            });
+    function toggleResellerStatus(button) {
+        if (!confirm('{{ __("Are you sure?") }}')) return;
+
+        button.disabled = true;
+        
+        fetch('{{ route("customer.reseller.toggle-status") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.message);
+                button.disabled = false;
+            } else {
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ __("An error occurred") }}');
+            button.disabled = false;
         });
-    });
+    }
+
+    function requestResellerDeletion(button) {
+        if (!confirm('{{ __("Are you sure you want to request deletion of your reseller account? This action cannot be undone.") }}')) {
+            return;
+        }
+
+        button.disabled = true;
+        
+        fetch('{{ route("customer.reseller.request-delete") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+             if (data.error) {
+                alert(data.message);
+                button.disabled = false;
+            } else {
+                alert(data.message);
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ __("An error occurred") }}');
+            button.disabled = false;
+        });
+    }
 </script>
 @endpush
