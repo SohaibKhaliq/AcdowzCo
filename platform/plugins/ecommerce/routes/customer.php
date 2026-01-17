@@ -282,6 +282,17 @@ Theme::registerRoutes(function (): void {
                 ])->wherePrimaryKey();
             });
 
+            Route::group(['prefix' => 'reseller', 'as' => 'customer.reseller.'], function (): void {
+                Route::post('toggle-status', [
+                    'as' => 'toggle-status',
+                    'uses' => 'ResellerController@toggleStatus',
+                ]);
+                Route::post('request-delete', [
+                    'as' => 'request-delete',
+                    'uses' => 'ResellerController@requestDelete',
+                ]);
+            });
+
             Route::prefix(EcommerceHelper::getPageSlug('customer_order_returns'))->group(function (): void {
                 Route::get('/', [
                     'as' => 'order_returns',
