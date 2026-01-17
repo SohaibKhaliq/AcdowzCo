@@ -15,6 +15,7 @@ use Botble\Base\Forms\Fields\EditorField;
 use Botble\Base\Forms\Fields\EmailField;
 use Botble\Base\Forms\Fields\HtmlField;
 use Botble\Base\Forms\Fields\MediaImageField;
+use Botble\Base\Forms\Fields\NumberField;
 use Botble\Base\Forms\Fields\SelectField;
 use Botble\Base\Forms\Fields\TextareaField;
 use Botble\Base\Forms\Fields\TextField;
@@ -122,6 +123,30 @@ class StoreForm extends FormAbstract
                     ->pluck('name', 'id')
                     ->all(),
                 'colspan' => 3,
+            ])
+            ->add('agreement_type', SelectField::class, [
+                'label' => __('Agreement Type'),
+                'required' => true,
+                'choices' => [
+                    'commission' => __('Commission (%)'),
+                    'flat_fee' => __('Flat Fee'),
+                ],
+                'colspan' => 2,
+            ])
+            ->add('agreement_value', NumberField::class, [
+                'label' => __('Agreement Value'),
+                'required' => true,
+                'attr' => [
+                    'placeholder' => __('Commission % or Flat Fee amount'),
+                ],
+                'colspan' => 2,
+            ])
+            ->add('agreement_notes', TextareaField::class, [
+                'label' => __('Agreement Notes'),
+                'attr' => [
+                    'rows' => 3,
+                ],
+                'colspan' => 2,
             ])
             ->when(! MarketplaceHelper::hideStoreSocialLinks(), function (): void {
                 $this
