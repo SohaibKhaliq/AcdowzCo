@@ -374,25 +374,25 @@ AdminHelper::registerRoutes(function (): void {
                 'permission' => 'customers.index',
             ]);
 
-            Route::post('{id}/process-deletion', [
+            Route::match(['GET', 'POST'], '{id}/process-deletion', [
                 'as' => 'process-deletion',
                 'uses' => 'Admin\ResellerManagementController@processDeletion',
                 'permission' => 'customers.edit',
             ])->wherePrimaryKey();
 
-            Route::post('{id}/reject-deletion', [
+            Route::match(['GET', 'POST'], '{id}/reject-deletion', [
                 'as' => 'reject-deletion',
                 'uses' => 'Admin\ResellerManagementController@rejectDeletion',
                 'permission' => 'customers.edit',
             ])->wherePrimaryKey();
 
-            Route::post('{id}/disable', [
+            Route::match(['GET', 'POST'], '{id}/disable', [
                 'as' => 'disable',
                 'uses' => 'Admin\ResellerManagementController@disableReseller',
                 'permission' => 'customers.edit',
             ])->wherePrimaryKey();
 
-            Route::post('{id}/enable', [
+            Route::match(['GET', 'POST'], '{id}/enable', [
                 'as' => 'enable',
                 'uses' => 'Admin\ResellerManagementController@enableReseller',
                 'permission' => 'customers.edit',
