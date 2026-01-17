@@ -74,7 +74,7 @@ Route::group([
         ->parameters(['' => 'revenue'])
         ->only(['index']);
 
-    Route::get('statements', fn () => to_route('marketplace.vendor.revenues.index'))
+    Route::get('statements', fn() => to_route('marketplace.vendor.revenues.index'))
         ->name('statements.index');
 
     Route::resource('withdrawals', 'WithdrawalController')
@@ -334,29 +334,29 @@ Route::group([
     Route::group(['prefix' => 'shipping-countries', 'as' => 'shipping-countries.'], function (): void {
         Route::get('/', [
             'as' => 'index',
-            'uses' => 'Vendor\ShippingCountryController@index',
+            'uses' => '\Botble\Marketplace\Http\Controllers\Vendor\ShippingCountryController@index',
         ]);
 
         Route::post('/', [
             'as' => 'update',
-            'uses' => 'Vendor\ShippingCountryController@update',
+            'uses' => '\Botble\Marketplace\Http\Controllers\Vendor\ShippingCountryController@update',
         ]);
     });
 
     Route::group(['prefix' => 'subscriptions', 'as' => 'subscriptions.'], function (): void {
         Route::get('/', [
             'as' => 'index',
-            'uses' => 'Botble\Marketplace\Http\Controllers\Vendor\SubscriptionController@index',
+            'uses' => '\Botble\Marketplace\Http\Controllers\Vendor\SubscriptionController@index',
         ]);
 
         Route::post('subscribe', [
             'as' => 'subscribe',
-            'uses' => 'Botble\Marketplace\Http\Controllers\Vendor\SubscriptionController@subscribe',
+            'uses' => '\Botble\Marketplace\Http\Controllers\Vendor\SubscriptionController@subscribe',
         ]);
 
         Route::post('renew/{id}', [
             'as' => 'renew',
-            'uses' => 'Botble\Marketplace\Http\Controllers\Vendor\SubscriptionController@renew',
+            'uses' => '\Botble\Marketplace\Http\Controllers\Vendor\SubscriptionController@renew',
         ])->wherePrimaryKey();
     });
 });
