@@ -318,5 +318,27 @@ return [
                 'product_files' => 'plugins/ecommerce::ecommerce.product_files',
             ],
         ],
+        'reseller-deletion-requested' => [
+            'title' => 'Reseller Deletion Requested',
+            'description' => 'Send email to admin when a reseller requests account deletion',
+            'subject' => 'Reseller Account Deletion Request - {{ reseller_id }}',
+            'can_off' => false,
+            'variables' => [
+                'customer_name' => 'plugins/ecommerce::ecommerce.customer_name',
+                'customer_email' => 'plugins/ecommerce::ecommerce.customer_email',
+                'reseller_id' => 'Reseller ID',
+                'requested_at' => 'Requested At',
+            ],
+        ],
+        'reseller-account-disabled' => [
+            'title' => 'Reseller Account Disabled',
+            'description' => 'Send email to reseller when their account is disabled',
+            'subject' => 'Your Reseller Account Has Been Disabled',
+            'can_off' => false,
+            'variables' => [
+                'customer_name' => 'plugins/ecommerce::ecommerce.customer_name',
+                'reseller_id' => 'Reseller ID',
+            ],
+        ],
     ]),
 ];
