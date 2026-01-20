@@ -60,6 +60,8 @@ class Customer extends BaseModel implements
         'phone_verified_at',
         'oauth_provider',
         'oauth_uid',
+        'block_reason',
+        'is_vendor',
     ];
 
     protected $hidden = [

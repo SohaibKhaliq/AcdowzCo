@@ -72,11 +72,16 @@ class EnhancedProductOversightController extends BaseController
                 ->setMessage(__('No products selected'));
         }
 
-        $count = Product::whereIn('id', $productIds)
-            ->update([
+        $updated = Product::whereIn('id', $productIds)->get();
+
+        foreach ($updated as $product) {
+            $product->update([
                 'status' => 'published',
                 'approved_by' => auth()->id(),
             ]);
+        }
+
+        $count = $updated->count();
 
         return $this->httpResponse()
             ->setMessage(__(':count products approved successfully', ['count' => $count]));

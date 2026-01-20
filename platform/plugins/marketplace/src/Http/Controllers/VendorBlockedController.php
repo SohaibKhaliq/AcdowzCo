@@ -28,7 +28,7 @@ class VendorBlockedController extends BaseController
 
         $store = $customer->store;
 
-        if ($store->exists()) {
+        if ($store && $store->exists) {
             $store->update(['status' => StoreStatusEnum::BLOCKED]);
         }
 
@@ -61,7 +61,7 @@ class VendorBlockedController extends BaseController
 
         $store = $customer->store;
 
-        if ($store->exists()) {
+        if ($store && $store->exists) {
             $store->update(['status' => StoreStatusEnum::PUBLISHED]);
         }
 
